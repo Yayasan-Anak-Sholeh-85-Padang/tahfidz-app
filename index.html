@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Tahfidz Juz Amma — Yayasan Anak Sholeh 85</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--gd:#1B5E3B;--gm:#2E7D52;--gl:#E8F5EC;--gold:#C9A84C;--goldl:#F5EDD6;--cream:#FAFAF5;--ink:#1A1A1A;--inks:#555;--inkf:#999;--w:#FFF;--red:#D32F2F;--redl:#FFEBEE;--org:#E65100;--orgl:#FFF3E0;--blue:#1565C0;--bluel:#E3F2FD;--r:12px;--sh:0 2px 12px rgba(0,0,0,.08);
@@ -162,6 +163,21 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);min
 .rtbl th{text-align:left;padding:10px 8px;background:var(--gd);color:var(--w);font-weight:600}
 .rtbl td{padding:10px 8px;border-bottom:1px solid #eee}
 .rsum{margin-top:16px;padding:12px;background:var(--gl);border-radius:8px;font-size:13px;color:var(--gd);text-align:center;font-weight:600}
+
+/* Mushaf image mode */
+.mode-toggle{display:flex;gap:8px;padding:12px 16px;background:var(--w);border-bottom:1px solid rgba(0,0,0,.06)}
+.mode-btn{flex:1;padding:10px;font-size:12px;font-weight:600;border-radius:8px;border:1.5px solid var(--gl);background:var(--w);color:var(--inks);cursor:pointer;font-family:'Inter',sans-serif;text-align:center}
+.mode-btn.on{background:var(--gd);color:var(--w);border-color:var(--gd)}
+.mushaf-img-wrap{padding:16px}
+.mushaf-img-frame{background:var(--w);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;border:2px solid var(--goldl)}
+.mushaf-img-frame img{width:100%;display:block}
+.mushaf-img-loading{text-align:center;padding:80px 20px;color:var(--inkf);font-size:13px}
+.mushaf-pg-nav{display:flex;justify-content:center;align-items:center;gap:16px;padding:12px 16px}
+.mpnb{padding:10px 20px;border-radius:8px;border:1.5px solid var(--gl);background:var(--w);color:var(--gd);font-weight:600;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif}
+.mpnb:active{background:var(--gl)}.mpnb:disabled{opacity:.3;cursor:default}
+.audio-ayah-list{padding:8px 16px;display:flex;flex-wrap:wrap;gap:4px}
+.aab{display:inline-flex;align-items:center;gap:4px;padding:7px 12px;border-radius:20px;border:1.5px solid var(--gl);background:var(--w);font-size:12px;font-weight:600;color:var(--gd);cursor:pointer;font-family:'Inter',sans-serif}
+.aab:active,.aab.playing{background:var(--gd);color:var(--w);border-color:var(--gd)}
 
 /* Landing */
 .hero{background:linear-gradient(135deg,var(--gd) 0%,#1a6b42 50%,var(--gm) 100%);color:var(--w);padding:48px 24px 40px;text-align:center}
@@ -426,6 +442,24 @@ function ayahAudioUrl(surahNum,ayahNum){
   return AUDIO_BASE+String(surahNum).padStart(3,'0')+String(ayahNum).padStart(3,'0')+'.mp3';
 }
 
+// Mushaf Madinah page mapping (surah number → [start page, end page])
+const MUSHAF_PAGES={
+78:[582,583],79:[583,584],80:[585,585],81:[586,586],82:[587,587],
+83:[587,589],84:[589,589],85:[590,590],86:[591,591],87:[591,591],
+88:[592,592],89:[593,593],90:[594,594],91:[595,595],92:[595,595],
+93:[596,596],94:[596,596],95:[597,597],96:[597,597],97:[598,598],
+98:[598,599],99:[599,599],100:[599,600],101:[600,600],102:[600,600],
+103:[601,601],104:[601,601],105:[601,601],106:[602,602],107:[602,602],
+108:[602,602],109:[603,603],110:[603,603],111:[603,603],112:[604,604],
+113:[604,604],114:[604,604]
+};
+// Mushaf page image URL (Quran.com CDN - Madinah Mushaf)
+function mushafPageUrl(page){
+  return `https://cdn.qurancdn.com/images/pages/page${page}.png`;
+}
+let s1Mode='interactive'; // 'mushaf' or 'interactive'
+let mushafCurPage=582;
+
 // Initialize surah objects
 SURAH_META.forEach(m=>{
   SURAHS.push({num:m.num,name_ar:m.name_ar,name_id:m.name_id,ayahCount:m.ayas,timeLimit:m.tl,verses:[]});
@@ -532,13 +566,13 @@ function togglePlayPause(){
 
 function prevAyah(){
   const s=SURAHS[curSurah];
-  const prev=Math.max(1,curPlayingAyah-1);
-  playAyah(s.num,prev);
+  const cur=curPlayingAyah<1?2:curPlayingAyah;
+  playAyah(s.num,Math.max(1,cur-1));
 }
 function nextAyah(){
   const s=SURAHS[curSurah];
-  const next=Math.min(s.ayahCount,curPlayingAyah+1);
-  playAyah(s.num,next);
+  const cur=curPlayingAyah<1?0:curPlayingAyah;
+  playAyah(s.num,Math.min(s.ayahCount,cur+1));
 }
 
 // ===== REGISTRATION & LOGIN =====
@@ -627,10 +661,96 @@ function renderStg(){
 // ===== STAGE 1: MUSHAF + AUDIO =====
 function rS1(c){
   const s=SURAHS[curSurah];
+  const pages=MUSHAF_PAGES[s.num]||[582,582];
+  mushafCurPage=pages[0];
+
+  // Mode toggle + content container
+  c.innerHTML=`
+    <div class="mode-toggle">
+      <button class="mode-btn ${s1Mode==='mushaf'?'on':''}" onclick="switchS1Mode('mushaf')">📖 Mushaf Madinah</button>
+      <button class="mode-btn ${s1Mode==='interactive'?'on':''}" onclick="switchS1Mode('interactive')">📝 Interaktif</button>
+    </div>
+    <div id="s1-content"></div>
+    <div class="audio-autoplay"><label><input type="checkbox" id="autoplay-cb" ${autoplayOn?'checked':''} onchange="autoplayOn=this.checked"> Putar otomatis ke ayat berikutnya</label></div>
+    <div class="audio-bar">
+      <button class="audio-play-btn" id="audio-main-btn" onclick="togglePlayPause()">▶</button>
+      <div class="audio-info"><div class="audio-ayah-label" id="audio-ayah-label">Tap ayat untuk dengar</div><div class="audio-status" id="audio-status">Syaikh Mishary Rashid Al-Afasy</div></div>
+      <div class="audio-nav">
+        <button class="audio-nav-btn" onclick="prevAyah()">⏮</button>
+        <button class="audio-nav-btn" onclick="nextAyah()">⏭</button>
+      </div>
+    </div>
+    <div class="pad" style="padding-top:16px"><button class="btn btn-p" onclick="cs1()">Lanjut ke Ujian →</button></div>`;
+  renderS1Content();
+}
+
+function switchS1Mode(mode){
+  s1Mode=mode;stopAudio();
+  document.querySelectorAll('.mode-toggle .mode-btn').forEach(b=>b.classList.remove('on'));
+  event.target.classList.add('on');
+  renderS1Content();
+}
+
+function renderS1Content(){
+  const c=document.getElementById('s1-content');
+  if(s1Mode==='mushaf')renderMushafImg(c);
+  else renderMushafText(c);
+}
+
+// --- Mushaf Image Mode ---
+function renderMushafImg(c){
+  const s=SURAHS[curSurah];
+  const pages=MUSHAF_PAGES[s.num]||[582,582];
+  const startP=pages[0],endP=pages[1];
+
+  let imgHtml=`<div class="mushaf-img-wrap">
+    <div class="mushaf-img-frame"><div class="mushaf-img-loading" id="mimg-loading">Memuat halaman mushaf...</div><img id="mimg" src="${mushafPageUrl(mushafCurPage)}" alt="Mushaf halaman ${mushafCurPage}" style="display:none" onload="this.style.display='block';document.getElementById('mimg-loading').style.display='none'" onerror="document.getElementById('mimg-loading').innerHTML='<div style=\\'color:var(--red)\\'>Gambar tidak tersedia. Coba mode Interaktif.</div>'"></div>
+    ${startP!==endP?`<div class="mushaf-pg-nav"><button class="mpnb" onclick="mushafPgNav(-1)" id="mprev" ${mushafCurPage<=startP?'disabled':''}>← Sebelumnya</button><span style="font-size:13px;color:var(--inks)" id="mpg-label">Hal. ${mushafCurPage} dari ${startP}–${endP}</span><button class="mpnb" onclick="mushafPgNav(1)" id="mnext" ${mushafCurPage>=endP?'disabled':''}>Berikutnya →</button></div>`:`<div class="mushaf-page-num">Halaman ${mushafCurPage} — Mushaf Madinah</div>`}
+  </div>`;
+
+  // Audio buttons per ayah
+  let ayahBtns=`<div style="padding:8px 16px;font-size:12px;font-weight:600;color:var(--inks)">🔊 Dengarkan per ayat:</div><div class="audio-ayah-list">`;
+  for(let i=1;i<=s.ayahCount;i++){
+    ayahBtns+=`<button class="aab" id="aab-${i}" onclick="playAyahBtn(${s.num},${i})">▶ ${i}</button>`;
+  }
+  ayahBtns+=`</div>`;
+
+  c.innerHTML=imgHtml+ayahBtns;
+}
+
+function mushafPgNav(dir){
+  const s=SURAHS[curSurah];
+  const pages=MUSHAF_PAGES[s.num]||[582,582];
+  mushafCurPage=Math.max(pages[0],Math.min(pages[1],mushafCurPage+dir));
+  const img=document.getElementById('mimg');
+  const loading=document.getElementById('mimg-loading');
+  if(img){img.style.display='none';img.src=mushafPageUrl(mushafCurPage)}
+  if(loading)loading.style.display='block';
+  const prev=document.getElementById('mprev'),next=document.getElementById('mnext'),lbl=document.getElementById('mpg-label');
+  if(prev)prev.disabled=mushafCurPage<=pages[0];
+  if(next)next.disabled=mushafCurPage>=pages[1];
+  if(lbl)lbl.textContent=`Hal. ${mushafCurPage} dari ${pages[0]}–${pages[1]}`;
+}
+
+function playAyahBtn(surahNum,ayahNum){
+  document.querySelectorAll('.aab').forEach(b=>b.classList.remove('playing'));
+  const btn=document.getElementById(`aab-${ayahNum}`);
+  if(btn)btn.classList.add('playing');
+  playAyah(surahNum,ayahNum);
+  // Remove highlight when done
+  const checkDone=setInterval(()=>{
+    if(!curAudio||curAudio.ended||curPlayingAyah!==ayahNum){
+      if(btn)btn.classList.remove('playing');clearInterval(checkDone);
+    }
+  },500);
+}
+
+// --- Interactive Text Mode ---
+function renderMushafText(c){
+  const s=SURAHS[curSurah];
   const rv=s.verses.filter(v=>!v.isBismillah);
   const bismillah=s.verses.find(v=>v.isBismillah);
 
-  // Build mushaf text
   let mushafHtml='';
   rv.forEach((v,i)=>{
     const ayahNumAr=toArabicNum(v.num);
@@ -650,17 +770,7 @@ function rS1(c){
       <div class="tp-ar" id="tp-ar"></div>
       <div class="tp-lat" id="tp-lat"></div>
       <div class="tp-id" id="tp-id"></div>
-    </div>
-    <div class="audio-autoplay"><label><input type="checkbox" id="autoplay-cb" onchange="autoplayOn=this.checked"> Putar otomatis ke ayat berikutnya</label></div>
-    <div class="audio-bar">
-      <button class="audio-play-btn" id="audio-main-btn" onclick="togglePlayPause()">▶</button>
-      <div class="audio-info"><div class="audio-ayah-label" id="audio-ayah-label">Tap ayat untuk dengar</div><div class="audio-status" id="audio-status">Syaikh Mishary Rashid Al-Afasy</div></div>
-      <div class="audio-nav">
-        <button class="audio-nav-btn" onclick="prevAyah()">⏮</button>
-        <button class="audio-nav-btn" onclick="nextAyah()">⏭</button>
-      </div>
-    </div>
-    <div class="pad" style="padding-top:16px"><button class="btn btn-p" onclick="cs1()">Lanjut ke Ujian →</button></div>`;
+    </div>`;
 }
 
 function onAyahTap(surahNum,ayahNum,idx){
