@@ -816,7 +816,7 @@ function rS2(c){
     opts.push({t:ov[0]||'...',ok:false},{t:ov[1]||'...',ok:false});
     for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]]}
     const pv=bI>0?rv[bI-1].ar:s.verses[0].ar;
-    return`<div class="qcard"><div class="qprompt">Ayat ke-${bI+1}: Setelah...</div><div class="qar">${pv}</div>${opts.map((o,oi)=>`<button class="qopt" id="op${qN}${oi}" onclick="sO(${qN},${oi},${o.ok})" data-ok="${o.ok}">${o.t}</button>`).join('')}</div>`;
+    return`<div class="qcard"><div class="qprompt">Apa ayat setelah ini:</div><div class="qar">${pv}</div>${opts.map((o,oi)=>`<button class="qopt" id="op${qN}${oi}" onclick="sO(${qN},${oi},${o.ok})" data-ok="${o.ok}">${o.t}</button>`).join('')}</div>`;
   }).join('');
   c.innerHTML=`<div class="qcon"><div class="arrinst">Pilih ayat yang benar:</div>${qh}</div><div class="pad"><button class="btn btn-p" onclick="chkF(${bi.length})">Periksa Jawaban</button></div>`;
 }
