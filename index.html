@@ -770,7 +770,7 @@ function renderMushafText(c){
     <div class="mushaf-container">
       <div class="mushaf-page">
         <div class="mushaf-header"><div class="mushaf-surah-name">سُورَةُ ${s.name_ar}</div></div>
-        ${bismillah?`<div class="mushaf-bismillah">${bismillah.ar}</div>`:(s.num===9?'':`<div class="mushaf-bismillah">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>`)}
+        ${bismillah?`<div class="mushaf-bismillah" style="cursor:pointer" onclick="playBismillah()">${bismillah.ar}</div>`:(s.num===9?'':`<div class="mushaf-bismillah" style="cursor:pointer" onclick="playBismillah()">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>`)}
         <div class="mushaf-body"><div class="mushaf-text">${mushafHtml}</div></div>
         <div class="mushaf-footer">جُزْءُ عَمَّ — ${s.name_id} — ${s.ayahCount} آيات</div>
       </div>
@@ -786,14 +786,28 @@ function onAyahTap(surahNum,ayahNum,idx){
   const s=SURAHS[curSurah];
   const v=s.verses.find(v=>v.num===ayahNum);
   if(!v)return;
-  // Show translation panel
   const panel=document.getElementById('trans-panel');
   panel.classList.remove('hide');
   document.getElementById('tp-ar').textContent=v.ar;
   document.getElementById('tp-lat').textContent=v.lat;
   document.getElementById('tp-id').textContent=v.id;
-  // Play audio
   playAyah(surahNum,ayahNum);
+}
+
+function playBismillah(){
+  stopAudio();
+  curAudio=new Audio(ayahAudioUrl(1,1));
+  const barLabel=document.getElementById('audio-ayah-label');
+  const barStatus=document.getElementById('audio-status');
+  if(barLabel)barLabel.textContent='Bismillah';
+  if(barStatus)barStatus.textContent='Memutar...';
+  const playBtn=document.getElementById('audio-main-btn');
+  if(playBtn)playBtn.textContent='⏸';
+  const panel=document.getElementById('trans-panel');
+  if(panel){panel.classList.remove('hide');document.getElementById('tp-ar').textContent='بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';document.getElementById('tp-lat').textContent='Bismillāhir-raḥmānir-raḥīm';document.getElementById('tp-id').textContent='Dengan nama Allah Yang Maha Pengasih, Maha Penyayang'}
+  curAudio.onended=()=>{if(playBtn)playBtn.textContent='▶';if(barStatus)barStatus.textContent='Selesai'};
+  curAudio.onerror=()=>{if(barStatus)barStatus.textContent='Audio tidak tersedia';if(playBtn)playBtn.textContent='▶'};
+  curAudio.play().catch(()=>{});
 }
 
 function toArabicNum(n){
