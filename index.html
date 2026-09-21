@@ -535,7 +535,7 @@ function playAyah(surahNum,ayahNum){
     if(el)el.classList.remove('playing');
     if(playBtn)playBtn.textContent='▶';
     if(barStatus)barStatus.textContent='Selesai';
-    curPlayingAyah=-1;
+    // Keep curPlayingAyah so next/prev work from last position
     if(autoplayOn){
       const s=SURAHS[curSurah];
       const nextAyah=ayahNum+1;
