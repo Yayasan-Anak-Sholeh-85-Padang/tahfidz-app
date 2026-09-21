@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tahfidz Juz Amma — Yayasan Anak Sholeh 85</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--gd:#1B5E3B;--gm:#2E7D52;--gl:#E8F5EC;--gold:#C9A84C;--goldl:#F5EDD6;--cream:#FAFAF5;--ink:#1A1A1A;--inks:#555;--inkf:#999;--w:#FFF;--red:#D32F2F;--redl:#FFEBEE;--org:#E65100;--orgl:#FFF3E0;--blue:#1565C0;--bluel:#E3F2FD;--r:12px;--sh:0 2px 12px rgba(0,0,0,.08);
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);min-height:100%;-webkit-font-smoothing:antialiased}
+.hide{display:none!important}
+
+/* Header */
+.hdr{background:linear-gradient(135deg,var(--gd),var(--gm));color:var(--w);padding:20px;position:sticky;top:0;z-index:100}
+.hdr-brand{font-size:11px;letter-spacing:.5px;color:var(--gold);font-weight:600;margin-bottom:4px}
+.hdr-title{font-family:'Amiri',serif;font-size:24px;font-weight:700;margin-bottom:2px}
+.hdr-sub{font-size:13px;color:rgba(255,255,255,.75)}
+.hdr-user{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15)}
+.hdr-avatar{width:28px;height:28px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--ink)}
+.hdr-name{font-size:13px;flex:1}
+.hdr-btn{background:none;border:none;color:var(--gold);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif}
+
+/* Buttons */
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:var(--r);font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;text-align:center;transition:all .2s;margin-bottom:8px}
+.btn-p{background:var(--gd);color:var(--w)}.btn-p:active{background:#145030}
+.btn-o{background:var(--w);color:var(--gd);border:2px solid var(--gd)}
+.btn-wa{background:#25D366;color:var(--w)}.btn-wa:active{background:#1da851}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-red{background:var(--redl);color:var(--red)}
+.btn-sm{padding:10px;font-size:12px}
+
+/* Inputs */
+.ig{margin-bottom:14px;text-align:left}
+.il{font-size:12px;font-weight:600;color:var(--inks);margin-bottom:6px;display:block}
+.ip{width:100%;padding:12px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;background:var(--w)}
+.ip:focus{outline:none;border-color:var(--gd)}
+
+/* Tabs */
+.tabs{display:flex;background:var(--w);border-bottom:1px solid rgba(0,0,0,.06);padding:0 8px}
+.tab{flex:1;padding:12px 6px;font-size:12px;font-weight:600;color:var(--inkf);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:'Inter',sans-serif}
+.tab.on{color:var(--gd);border-bottom-color:var(--gd)}
+
+/* Progress */
+.prog{padding:16px 20px;background:var(--w);border-bottom:1px solid rgba(0,0,0,.06)}
+.prog-lbl{font-size:12px;color:var(--inks);margin-bottom:8px;display:flex;justify-content:space-between}
+.prog-bar{height:6px;background:var(--gl);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gd),var(--gold));border-radius:3px;transition:width .5s}
+
+/* Surah list */
+.slist{padding:12px 16px}
+.scard{background:var(--w);border-radius:var(--r);padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:var(--sh);transition:transform .15s;border:1px solid rgba(0,0,0,.04)}
+.scard:active{transform:scale(.98)}
+.snum{width:40px;height:40px;background:var(--gl);color:var(--gd);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.snum.done{background:var(--gd);color:var(--w)}
+.sinfo{flex:1}
+.sname-ar{font-family:'Amiri',serif;font-size:20px;color:var(--gd);line-height:1.3}
+.sname-id{font-size:13px;color:var(--inks)}
+.smeta{font-size:11px;color:var(--inkf);margin-top:2px}
+.sbadge{flex-shrink:0;font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px}
+.st0{background:var(--gl);color:var(--gd)}.st1{background:var(--goldl);color:#8B7424}.st2{background:var(--bluel);color:var(--blue)}.st3{background:var(--gd);color:var(--w)}
+
+/* Lesson */
+.lesson{display:none}.lesson.on{display:block}
+.lhdr{background:linear-gradient(135deg,var(--gd),var(--gm));color:var(--w);padding:20px}
+.back{background:none;border:none;color:rgba(255,255,255,.8);font-size:14px;cursor:pointer;margin-bottom:12px;font-family:'Inter',sans-serif}
+.ltitle{font-family:'Amiri',serif;font-size:28px;margin-bottom:4px}
+.lsub{font-size:13px;color:rgba(255,255,255,.7)}
+
+/* Stages nav */
+.snav{display:flex;background:var(--w);border-bottom:1px solid rgba(0,0,0,.06);padding:16px 20px}
+.sstep{flex:1;text-align:center;position:relative}
+.scirc{width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;border:2px solid #ddd;color:#bbb;background:var(--w);cursor:pointer;transition:all .2s}
+.scirc.on{border-color:var(--gd);color:var(--gd);background:var(--gl)}
+.scirc.dn{border-color:var(--gd);color:var(--w);background:var(--gd)}
+.slbl{font-size:10px;color:var(--inkf);margin-top:4px;display:block}
+.slbl.on{color:var(--gd);font-weight:600}
+.sconn{position:absolute;top:18px;left:68%;width:64%;height:2px;background:#ddd}
+.sconn.dn{background:var(--gd)}
+
+/* Mode toggle */
+.modes{display:flex;gap:8px;padding:16px 20px;background:var(--w);border-bottom:1px solid rgba(0,0,0,.06)}
+.mbtn{flex:1;padding:10px;font-size:12px;font-weight:600;border-radius:8px;border:1.5px solid var(--gl);background:var(--w);color:var(--inks);cursor:pointer;font-family:'Inter',sans-serif}
+.mbtn.on{background:var(--gd);color:var(--w);border-color:var(--gd)}
+
+/* ===== MUSHAF DISPLAY ===== */
+.mushaf-container{padding:16px}
+.mushaf-page{background:var(--w);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;border:2px solid var(--goldl)}
+.mushaf-header{background:linear-gradient(135deg,var(--goldl),#f0e6c8);padding:14px 20px;text-align:center;border-bottom:2px solid var(--gold)}
+.mushaf-surah-name{font-family:'Amiri Quran','Amiri',serif;font-size:32px;color:var(--gd);line-height:1.4}
+.mushaf-bismillah{font-family:'Amiri Quran','Amiri',serif;font-size:24px;color:var(--ink);text-align:center;padding:20px 16px 12px;line-height:1.8;border-bottom:1px solid var(--goldl)}
+.mushaf-body{padding:16px 20px}
+.mushaf-ayah{display:inline;cursor:pointer;transition:background .2s}
+.mushaf-ayah:hover{background:var(--gl);border-radius:4px}
+.mushaf-ayah.playing{background:var(--goldl);border-radius:4px}
+.mushaf-ayah.highlight{background:#BBDEFB;border-radius:4px}
+.mushaf-text{font-family:'Amiri Quran','Amiri',serif;font-size:28px;line-height:2.2;direction:rtl;text-align:justify;color:var(--ink)}
+.mushaf-ayah-num{font-family:'Amiri Quran','Amiri',serif;font-size:18px;color:var(--gold);margin:0 4px;display:inline;direction:rtl;cursor:pointer}
+.mushaf-border{height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:8px 0}
+.mushaf-footer{padding:12px 16px;background:var(--goldl);text-align:center;font-size:11px;color:var(--inks);border-top:2px solid var(--gold)}
+
+/* Audio player bar */
+.audio-bar{position:sticky;bottom:0;background:var(--w);border-top:2px solid var(--gl);padding:12px 16px;display:flex;align-items:center;gap:12px;z-index:50;box-shadow:0 -2px 12px rgba(0,0,0,.08)}
+.audio-play-btn{width:44px;height:44px;border-radius:50%;border:none;background:var(--gd);color:var(--w);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.audio-play-btn:active{background:#145030}
+.audio-play-btn.loading{opacity:.6;pointer-events:none}
+.audio-info{flex:1;min-width:0}
+.audio-ayah-label{font-size:13px;font-weight:600;color:var(--ink)}
+.audio-status{font-size:11px;color:var(--inkf)}
+.audio-nav{display:flex;gap:8px}
+.audio-nav-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid #ddd;background:var(--w);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.audio-nav-btn:active{background:var(--gl)}
+.audio-autoplay{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--inks);padding:8px 16px;background:var(--w)}
+.audio-autoplay input{accent-color:var(--gd)}
+
+/* Ayah translation panel */
+.trans-panel{background:var(--gl);padding:16px 20px;border-top:1px solid rgba(0,0,0,.06)}
+.trans-panel .tp-ar{font-family:'Amiri Quran','Amiri',serif;font-size:22px;text-align:right;direction:rtl;color:var(--ink);line-height:1.8;margin-bottom:8px}
+.trans-panel .tp-lat{font-size:13px;color:var(--gm);font-style:italic;margin-bottom:6px;line-height:1.6}
+.trans-panel .tp-id{font-size:13px;color:var(--inks);line-height:1.6}
+
+/* Quiz */
+.qcon{padding:16px}
+.qcard{background:var(--w);border-radius:var(--r);padding:20px;margin-bottom:16px;box-shadow:var(--sh)}
+.qprompt{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:16px;line-height:1.5}
+.qar{font-family:'Amiri Quran','Amiri',serif;font-size:22px;text-align:right;direction:rtl;color:var(--gd);margin-bottom:12px;line-height:1.7;padding:8px;background:var(--gl);border-radius:8px}
+.qopt{display:block;width:100%;text-align:right;direction:rtl;padding:14px 16px;font-family:'Amiri Quran','Amiri',serif;font-size:18px;line-height:1.6;border:2px solid #e0e0e0;border-radius:10px;background:var(--w);cursor:pointer;margin-bottom:8px;transition:all .2s}
+.qopt.sel{border-color:var(--gd);background:var(--gl)}.qopt.ok{border-color:var(--gd);background:var(--gl)}.qopt.no{border-color:var(--red);background:var(--redl)}
+.arrinst{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:16px;text-align:center}
+
+/* Voice */
+.vsec{padding:16px}
+.vcard{background:var(--w);border-radius:var(--r);padding:24px;text-align:center;box-shadow:var(--sh)}
+.micb{width:80px;height:80px;border-radius:50%;border:none;font-size:32px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;margin:16px 0}
+.micb.idle{background:var(--gd);color:var(--w)}.micb.rec{background:var(--red);color:var(--w);animation:pulse 1.5s infinite}.micb.has{background:var(--gold);color:var(--ink)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(211,47,47,.4)}50%{box-shadow:0 0 0 16px rgba(211,47,47,0)}}
+.vtimer{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}.vtimer.warn{color:var(--red)}
+.vlimit{font-size:12px;color:var(--inkf);padding:6px 12px;background:var(--goldl);border-radius:20px;display:inline-block}
+.aplay{margin:16px 0;padding:12px;background:var(--gl);border-radius:8px;display:flex;align-items:center;gap:12px;justify-content:center}
+.playb{width:40px;height:40px;border-radius:50%;border:none;background:var(--gd);color:var(--w);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* Voice note feedback */
+.vn-feedback{margin-top:16px;background:var(--bluel);border-radius:var(--r);padding:16px;text-align:left}
+.vn-feedback-title{font-size:13px;font-weight:600;color:var(--blue);margin-bottom:8px}
+.vn-play{display:flex;align-items:center;gap:12px;padding:10px;background:var(--w);border-radius:8px}
+.vn-play-btn{width:36px;height:36px;border-radius:50%;border:none;background:var(--blue);color:var(--w);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.vn-play-info{font-size:12px;color:var(--inks)}
+.vn-date{font-size:11px;color:var(--inkf)}
+
+/* Score */
+.score{background:var(--w);border-radius:var(--r);padding:24px;text-align:center;box-shadow:var(--sh);margin:16px}
+.score-big{font-size:48px;font-weight:700;color:var(--gd)}
+.score-lbl{font-size:14px;color:var(--inks);margin-top:4px}
+.score-msg{font-size:16px;font-weight:600;margin-top:12px}
+.score-pass{color:var(--gd)}.score-fail{color:var(--red)}
+
+/* Report */
+.rcard{background:var(--w);border-radius:var(--r);padding:20px;box-shadow:var(--sh);margin:16px}
+.rtbl{width:100%;border-collapse:collapse;font-size:13px}
+.rtbl th{text-align:left;padding:10px 8px;background:var(--gd);color:var(--w);font-weight:600}
+.rtbl td{padding:10px 8px;border-bottom:1px solid #eee}
+.rsum{margin-top:16px;padding:12px;background:var(--gl);border-radius:8px;font-size:13px;color:var(--gd);text-align:center;font-weight:600}
+
+/* Landing */
+.hero{background:linear-gradient(135deg,var(--gd) 0%,#1a6b42 50%,var(--gm) 100%);color:var(--w);padding:48px 24px 40px;text-align:center}
+.hero-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.5px;color:var(--gold);background:rgba(201,168,76,.15);padding:6px 14px;border-radius:20px;margin-bottom:16px}
+.hero-title{font-family:'Amiri',serif;font-size:32px;font-weight:700;line-height:1.2;margin-bottom:8px}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.8);line-height:1.5}
+.trust{display:flex;justify-content:center;gap:24px;padding:16px 24px;background:var(--w);border-bottom:1px solid rgba(0,0,0,.06)}
+.trust-n{font-size:20px;font-weight:700;color:var(--gd)}.trust-l{font-size:10px;color:var(--inkf)}
+.sec{padding:32px 24px}.sec-t{font-family:'Amiri',serif;font-size:22px;color:var(--gd);margin-bottom:16px;text-align:center}
+.mstep{display:flex;gap:16px;margin-bottom:20px}
+.mstep-n{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0}
+.mstep h4{font-size:15px;margin-bottom:4px}.mstep p{font-size:13px;color:var(--inks);line-height:1.5}
+.feats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.feat{background:var(--w);border-radius:var(--r);padding:16px;text-align:center;box-shadow:var(--sh)}.feat-i{font-size:28px;margin-bottom:8px}.feat-l{font-size:12px;font-weight:600;color:var(--inks)}
+.pcard{background:var(--w);border-radius:16px;padding:28px 24px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.1);border:2px solid var(--gl);position:relative}
+.pbadge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);font-size:11px;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap}
+.pprice{font-size:42px;font-weight:700;color:var(--gd);margin-top:12px}.pper{font-size:14px;color:var(--inkf);margin-bottom:16px}
+.pfeats{text-align:left;margin-bottom:20px}.pitem{font-size:13px;color:var(--inks);padding:6px 0;display:flex;align-items:center;gap:8px}.pchk{color:var(--gd);font-weight:700}
+.paybox{background:linear-gradient(135deg,var(--gd),var(--gm));border-radius:var(--r);padding:24px;color:var(--w);margin-top:20px}
+.payt{font-size:14px;font-weight:700;margin-bottom:12px}.payr{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.15);font-size:13px}.payr:last-child{border-bottom:none}
+.paynote{font-size:12px;color:rgba(255,255,255,.7);margin-top:12px;line-height:1.5;padding:12px;background:rgba(0,0,0,.15);border-radius:8px}
+.cta{padding:24px;position:sticky;bottom:0;background:var(--cream);border-top:1px solid rgba(0,0,0,.06)}
+.pad{padding:0 16px 24px}
+.footer{text-align:center;padding:24px 20px;font-size:11px;color:var(--inkf);line-height:1.6}
+
+/* Admin */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:16px}
+.stat{background:var(--w);border-radius:10px;padding:14px 10px;text-align:center;box-shadow:var(--sh)}
+.stat-n{font-size:24px;font-weight:700}.stat-l{font-size:10px;color:var(--inkf);font-weight:600}
+.fbar{padding:12px 16px;display:flex;gap:8px;flex-wrap:wrap}
+.fbtn{padding:8px 14px;font-size:12px;font-weight:600;border-radius:20px;border:1.5px solid #e0e0e0;background:var(--w);color:var(--inks);cursor:pointer;font-family:'Inter',sans-serif}
+.fbtn.on{background:var(--gd);color:var(--w);border-color:var(--gd)}
+.stcard{background:var(--w);border-radius:var(--r);padding:16px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid #ddd}
+.stcard.active{border-left-color:var(--gd)}.stcard.expiring{border-left-color:var(--org)}.stcard.expired{border-left-color:var(--red)}.stcard.pending-setoran{border-left-color:var(--blue)}
+.st-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.st-name{font-size:15px;font-weight:600}
+.st-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.b-act{background:var(--gl);color:var(--gd)}.b-exp{background:var(--orgl);color:var(--org)}.b-dead{background:var(--redl);color:var(--red)}.b-set{background:var(--bluel);color:var(--blue)}
+.st-det{font-size:12px;color:var(--inks);line-height:1.8}
+.st-code{font-family:monospace;font-weight:700;font-size:13px;color:var(--gd);background:var(--gl);padding:2px 8px;border-radius:4px}
+.st-acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.abtn{padding:8px 14px;font-size:12px;font-weight:600;border-radius:8px;border:none;cursor:pointer;font-family:'Inter',sans-serif}
+.a-ext{background:var(--gd);color:var(--w)}.a-wa{background:#25D366;color:var(--w)}.a-off{background:var(--redl);color:var(--red)}.a-play{background:var(--bluel);color:var(--blue)}.a-ok{background:var(--gd);color:var(--w)}.a-rej{background:var(--redl);color:var(--red)}
+.search-ip{width:100%;padding:12px 14px 12px 40px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;background:var(--w)}
+.search-ip:focus{outline:none;border-color:var(--gd)}
+.empty{text-align:center;padding:40px 20px;color:var(--inkf)}
+.revcard{background:var(--w);border-radius:var(--r);padding:20px;margin:16px;box-shadow:var(--sh)}
+.revt{font-size:14px;font-weight:700;margin-bottom:12px}
+.revr{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f0f0;font-size:13px}
+.revtotal{font-size:20px;font-weight:700;color:var(--gd);text-align:center;margin-top:12px;padding-top:12px;border-top:2px solid var(--gl)}
+
+/* Setoran panel */
+.setoran-panel{background:var(--w);border-radius:var(--r);padding:20px;margin-bottom:16px;box-shadow:var(--sh);border:2px solid var(--bluel)}
+.sp-header{font-size:16px;font-weight:700;color:var(--blue);margin-bottom:12px}
+.sp-info{font-size:13px;color:var(--inks);line-height:1.8;margin-bottom:16px}
+.sp-audio{padding:16px;background:var(--bluel);border-radius:8px;text-align:center;margin-bottom:16px}
+.sp-btns{display:flex;gap:12px}
+.sp-btns .btn{flex:1}
+
+/* Voice note record for admin */
+.vn-rec-section{margin-top:16px;padding:16px;background:#F3E5F5;border-radius:var(--r)}
+.vn-rec-title{font-size:13px;font-weight:600;color:#7B1FA2;margin-bottom:10px}
+.vn-rec-btn{width:50px;height:50px;border-radius:50%;border:none;font-size:22px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.vn-rec-btn.idle{background:#7B1FA2;color:var(--w)}.vn-rec-btn.rec{background:var(--red);color:var(--w);animation:pulse 1.5s infinite}
+.vn-rec-btn.has{background:var(--gold);color:var(--ink)}
+</style>
+</head>
+<body>
+
+<!-- ===== LANDING ===== -->
+<div id="scr-landing" class="scr">
+<div class="hero">
+  <div class="hero-badge">YAYASAN ANAK SHOLEH 85 · PADANG</div>
+  <div style="font-size:56px;margin-bottom:12px">📖</div>
+  <div class="hero-title">Tahfidz Juz Amma</div>
+  <div class="hero-sub">Hafal Al-Quran Juz 30 dengan tampilan mushaf, audio per ayat, dan bimbingan ustadz</div>
+</div>
+<div class="trust">
+  <div style="text-align:center"><div class="trust-n">37</div><div class="trust-l">Surah</div></div>
+  <div style="text-align:center"><div class="trust-n">🔊</div><div class="trust-l">Audio Qari</div></div>
+  <div style="text-align:center"><div class="trust-n">✓</div><div class="trust-l">Setoran Ustadz</div></div>
+</div>
+<div class="sec">
+  <div class="sec-t">Metode 3 Tahap</div>
+  <div class="mstep"><div class="mstep-n" style="background:var(--gl);color:var(--gd)">1</div><div><h4>Belajar dengan Mushaf & Audio</h4><p>Tampilan seperti mushaf asli. Tap ayat untuk dengar bacaan qari, dengan highlight otomatis.</p></div></div>
+  <div class="mstep"><div class="mstep-n" style="background:var(--goldl);color:#8B7424">2</div><div><h4>Ujian Interaktif</h4><p>Pilih ayat yang benar. Harus lulus 80% untuk lanjut ke setoran.</p></div></div>
+  <div class="mstep"><div class="mstep-n" style="background:var(--bluel);color:var(--blue)">3</div><div><h4>Setoran ke Ustadz</h4><p>Rekam bacaan, ustadz verifikasi dan kirim voice note feedback langsung di aplikasi.</p></div></div>
+</div>
+<div class="sec" style="padding-top:0">
+  <div class="sec-t">Fitur Lengkap</div>
+  <div class="feats">
+    <div class="feat"><div class="feat-i">📖</div><div class="feat-l">Tampilan Mushaf</div></div>
+    <div class="feat"><div class="feat-i">🔊</div><div class="feat-l">Audio Per Ayat</div></div>
+    <div class="feat"><div class="feat-i">🎤</div><div class="feat-l">Rekam Setoran</div></div>
+    <div class="feat"><div class="feat-i">🎧</div><div class="feat-l">Feedback Ustadz</div></div>
+    <div class="feat"><div class="feat-i">📊</div><div class="feat-l">Laporan Progres</div></div>
+    <div class="feat"><div class="feat-i">📱</div><div class="feat-l">Dari HP Apa Saja</div></div>
+  </div>
+</div>
+<div class="sec" style="background:var(--gl);padding:32px 24px">
+  <div class="pcard">
+    <div class="pbadge">BIAYA LANGGANAN</div>
+    <div class="pprice">Rp 25.000</div>
+    <div class="pper">per bulan / per anak</div>
+    <div class="pfeats">
+      <div class="pitem"><span class="pchk">✓</span> 37 surah dengan tampilan mushaf</div>
+      <div class="pitem"><span class="pchk">✓</span> Audio bacaan Syaikh Al-Afasy</div>
+      <div class="pitem"><span class="pchk">✓</span> Ujian interaktif tak terbatas</div>
+      <div class="pitem"><span class="pchk">✓</span> Voice note feedback dari ustadz</div>
+      <div class="pitem"><span class="pchk">✓</span> Laporan progres untuk orang tua</div>
+    </div>
+    <div class="paybox">
+      <div class="payt">🏦 Pembayaran via BSI</div>
+      <div class="payr"><span style="color:rgba(255,255,255,.7)">Bank</span><span style="font-weight:600">BSI (Bank Syariah Indonesia)</span></div>
+      <div class="payr"><span style="color:rgba(255,255,255,.7)">No. Rekening</span><span style="font-weight:600">XXX-XXX-XXXX</span></div>
+      <div class="payr"><span style="color:rgba(255,255,255,.7)">Atas Nama</span><span style="font-weight:600">Yayasan Anak Sholeh 85</span></div>
+      <div class="payr"><span style="color:rgba(255,255,255,.7)">Jumlah</span><span style="font-weight:600">Rp 25.000</span></div>
+      <div class="paynote">Setelah transfer, kirim bukti pembayaran beserta nama anak ke WhatsApp kami.</div>
+    </div>
+    <a class="btn btn-wa" style="margin-top:16px;display:block;text-decoration:none" href="https://wa.me/62812XXXXXXXX?text=Assalamualaikum%2C%20saya%20ingin%20mendaftarkan%20anak%20saya%20untuk%20Tahfidz%20Juz%20Amma." target="_blank">Kirim Bukti Bayar via WhatsApp 💬</a>
+  </div>
+</div>
+<div class="cta">
+  <button class="btn btn-p" onclick="goScr('scr-register')">Daftar Anak Anda →</button>
+  <button class="btn btn-o" onclick="goScr('scr-login')">Sudah Daftar? Silahkan Masuk</button>
+  <button class="btn btn-gold btn-sm" onclick="goScr('scr-admin-login')">🔒 Admin / Ustadz</button>
+</div>
+</div>
+
+<!-- ===== REGISTER ===== -->
+<div id="scr-register" class="scr hide">
+<div class="hdr"><button class="back" onclick="goScr('scr-landing')">← Kembali</button><div class="hdr-title">Daftar Santri Baru</div></div>
+<div style="padding:24px">
+  <div class="ig"><label class="il">Nama Lengkap Santri *</label><input class="ip" id="r-name" type="text" placeholder="Ahmad Fauzi"></div>
+  <div class="ig"><label class="il">Nama Orang Tua *</label><input class="ip" id="r-parent" type="text" placeholder="Bunda Siti"></div>
+  <div class="ig"><label class="il">No. WhatsApp Orang Tua *</label><input class="ip" id="r-wa" type="tel" placeholder="08123456789"></div>
+  <hr style="border:none;border-top:1px solid #e0e0e0;margin:20px 0">
+  <div class="ig"><label class="il">Kode Akses *</label><input class="ip" id="r-code" type="text" placeholder="YAS-2026-XXXX" style="text-transform:uppercase;font-weight:600;letter-spacing:1px;font-size:17px;text-align:center"></div>
+  <div style="font-size:12px;color:var(--inkf);text-align:center;margin-bottom:16px">Belum punya kode? Transfer Rp 25.000 ke BSI lalu kirim bukti ke WhatsApp Yayasan.</div>
+  <button class="btn btn-p" onclick="doRegister()">Mulai Belajar →</button>
+</div>
+</div>
+
+<!-- ===== LOGIN ===== -->
+<div id="scr-login" class="scr hide">
+<div class="hdr"><button class="back" onclick="goScr('scr-landing')">← Kembali</button><div class="hdr-title">Masuk</div></div>
+<div style="padding:24px">
+  <div class="ig"><label class="il">Kode Akses</label><input class="ip" id="l-code" type="text" placeholder="YAS-2026-XXXX" style="text-transform:uppercase;font-weight:600;letter-spacing:1px;text-align:center"></div>
+  <div class="ig"><label class="il">Nama Santri</label><input class="ip" id="l-name" type="text" placeholder="Ahmad Fauzi"></div>
+  <button class="btn btn-p" onclick="doLogin()">Masuk →</button>
+</div>
+</div>
+
+<!-- ===== ADMIN LOGIN ===== -->
+<div id="scr-admin-login" class="scr hide">
+<div class="hdr"><button class="back" onclick="goScr('scr-landing')">← Kembali</button><div class="hdr-title">Login Admin / Ustadz</div></div>
+<div style="padding:24px">
+  <div class="ig"><label class="il">PIN Admin</label><input class="ip" id="a-pin" type="password" placeholder="Masukkan PIN" style="text-align:center;font-size:24px;letter-spacing:8px"></div>
+  <button class="btn btn-p" onclick="doAdminLogin()">Masuk sebagai Admin →</button>
+  <div style="font-size:12px;color:var(--inkf);text-align:center;margin-top:12px">Demo PIN: <b>1234</b></div>
+</div>
+</div>
+
+<!-- ===== STUDENT APP ===== -->
+<div id="scr-app" class="scr hide">
+<div class="hdr">
+  <div class="hdr-brand">YAYASAN ANAK SHOLEH 85</div>
+  <div class="hdr-title">Tahfidz Juz Amma</div>
+  <div class="hdr-user"><div class="hdr-avatar" id="u-av">A</div><div class="hdr-name" id="u-nm"></div><button class="hdr-btn" onclick="goScr('scr-landing')">Keluar</button></div>
+</div>
+<div class="prog"><div class="prog-lbl"><span>Progres Hafalan</span><span id="prog-txt">0 dari 37 surah</span></div><div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div></div>
+<div class="tabs">
+  <button class="tab on" onclick="stab('daftar')">Surah</button>
+  <button class="tab" onclick="stab('pesan')">Pesan Ustadz</button>
+  <button class="tab" onclick="stab('laporan')">Laporan</button>
+</div>
+<div id="v-daftar" class="vw"><div class="slist" id="surah-list"></div></div>
+<div id="v-pesan" class="vw hide"><div id="pesan-sec" style="padding:16px"></div></div>
+<div id="v-laporan" class="vw hide"><div id="report-sec"></div></div>
+</div>
+
+<!-- ===== ADMIN DASHBOARD ===== -->
+<div id="scr-admin" class="scr hide">
+<div class="hdr">
+  <div class="hdr-brand">ADMIN DASHBOARD</div>
+  <div class="hdr-title">Tahfidz Juz Amma</div>
+  <div class="hdr-sub">Kelola Santri, Setoran & Keuangan</div>
+  <div class="hdr-user"><div class="hdr-avatar" style="background:var(--blue)">⚙</div><div class="hdr-name">Admin Yayasan</div><button class="hdr-btn" onclick="goScr('scr-landing')">Keluar</button></div>
+</div>
+<div class="stats" id="admin-stats"></div>
+<div class="tabs">
+  <button class="tab on" onclick="atab('asantri')">Santri</button>
+  <button class="tab" onclick="atab('asetoran')">Setoran</button>
+  <button class="tab" onclick="atab('atambah')">+ Tambah</button>
+  <button class="tab" onclick="atab('akeuangan')">Keuangan</button>
+</div>
+<div id="v-asantri" class="vw"><div style="padding:12px 16px"><input class="search-ip" id="adm-search" placeholder="Cari nama santri..." oninput="renderAdmStudents()"></div><div class="fbar" id="adm-filter"></div><div style="padding:0 16px" id="adm-list"></div></div>
+<div id="v-asetoran" class="vw hide"><div style="padding:16px" id="setoran-list"></div></div>
+<div id="v-atambah" class="vw hide"><div style="padding:16px" id="add-form"></div></div>
+<div id="v-akeuangan" class="vw hide"><div id="revenue-sec"></div></div>
+</div>
+
+<!-- ===== LESSON VIEW ===== -->
+<div id="lesson" class="lesson">
+<div class="lhdr"><button class="back" onclick="backToList()">← Kembali</button><div class="ltitle" id="l-title"></div><div class="lsub" id="l-sub"></div></div>
+<div class="snav">
+  <div class="sstep"><div class="scirc on" id="sc1" onclick="goStg(1)">1</div><span class="slbl on" id="sl1">Belajar</span><div class="sconn" id="cn1"></div></div>
+  <div class="sstep"><div class="scirc" id="sc2" onclick="goStg(2)">2</div><span class="slbl" id="sl2">Ujian</span><div class="sconn" id="cn2"></div></div>
+  <div class="sstep"><div class="scirc" id="sc3" onclick="goStg(3)">3</div><span class="slbl" id="sl3">Setoran</span></div>
+</div>
+<div id="stg-content"></div>
+</div>
+
+<div class="footer">Yayasan Anak Sholeh 85 — Padang, Sumatera Barat<br>Tahfidz Digital v2.0</div>
+
+<script>
+// ===== SURAH DATA =====
+const SURAHS=[];
+const SURAH_META=[
+{num:78,name_ar:"النبأ",name_id:"An-Naba",ayas:40,tl:180},
+{num:79,name_ar:"النازعات",name_id:"An-Nazi'at",ayas:46,tl:200},
+{num:80,name_ar:"عبس",name_id:"'Abasa",ayas:42,tl:180},
+{num:81,name_ar:"التكوير",name_id:"At-Takwir",ayas:29,tl:150},
+{num:82,name_ar:"الإنفطار",name_id:"Al-Infitar",ayas:19,tl:120},
+{num:83,name_ar:"المطففين",name_id:"Al-Mutaffifin",ayas:36,tl:180},
+{num:84,name_ar:"الإنشقاق",name_id:"Al-Inshiqaq",ayas:25,tl:150},
+{num:85,name_ar:"البروج",name_id:"Al-Buruj",ayas:22,tl:140},
+{num:86,name_ar:"الطارق",name_id:"At-Tariq",ayas:17,tl:100},
+{num:87,name_ar:"الأعلى",name_id:"Al-A'la",ayas:19,tl:110},
+{num:88,name_ar:"الغاشية",name_id:"Al-Ghashiyah",ayas:26,tl:130},
+{num:89,name_ar:"الفجر",name_id:"Al-Fajr",ayas:30,tl:180},
+{num:90,name_ar:"البلد",name_id:"Al-Balad",ayas:20,tl:120},
+{num:91,name_ar:"الشمس",name_id:"Ash-Shams",ayas:15,tl:90},
+{num:92,name_ar:"الليل",name_id:"Al-Lail",ayas:21,tl:120},
+{num:93,name_ar:"الضحى",name_id:"Ad-Duha",ayas:11,tl:80},
+{num:94,name_ar:"الشرح",name_id:"Ash-Sharh",ayas:8,tl:60},
+{num:95,name_ar:"التين",name_id:"At-Tin",ayas:8,tl:60},
+{num:96,name_ar:"العلق",name_id:"Al-'Alaq",ayas:19,tl:100},
+{num:97,name_ar:"القدر",name_id:"Al-Qadr",ayas:5,tl:50},
+{num:98,name_ar:"البينة",name_id:"Al-Bayyinah",ayas:8,tl:90},
+{num:99,name_ar:"الزلزلة",name_id:"Az-Zalzalah",ayas:8,tl:60},
+{num:100,name_ar:"العاديات",name_id:"Al-'Adiyat",ayas:11,tl:70},
+{num:101,name_ar:"القارعة",name_id:"Al-Qari'ah",ayas:11,tl:70},
+{num:102,name_ar:"التكاثر",name_id:"At-Takathur",ayas:8,tl:60},
+{num:103,name_ar:"العصر",name_id:"Al-'Asr",ayas:3,tl:40},
+{num:104,name_ar:"الهمزة",name_id:"Al-Humazah",ayas:9,tl:60},
+{num:105,name_ar:"الفيل",name_id:"Al-Fil",ayas:5,tl:50},
+{num:106,name_ar:"قريش",name_id:"Quraish",ayas:4,tl:50},
+{num:107,name_ar:"الماعون",name_id:"Al-Ma'un",ayas:7,tl:50},
+{num:108,name_ar:"الكوثر",name_id:"Al-Kauthar",ayas:3,tl:40},
+{num:109,name_ar:"الكافرون",name_id:"Al-Kafirun",ayas:6,tl:50},
+{num:110,name_ar:"النصر",name_id:"An-Nasr",ayas:3,tl:40},
+{num:111,name_ar:"المسد",name_id:"Al-Masad",ayas:5,tl:50},
+{num:112,name_ar:"الإخلاص",name_id:"Al-Ikhlas",ayas:4,tl:40},
+{num:113,name_ar:"الفلق",name_id:"Al-Falaq",ayas:5,tl:50},
+{num:114,name_ar:"الناس",name_id:"An-Nas",ayas:6,tl:50}
+];
+
+// Audio base URL (Mishary Rashid Al-Afasy)
+const AUDIO_BASE='https://everyayah.com/data/Alafasy_128kbps/';
+function ayahAudioUrl(surahNum,ayahNum){
+  return AUDIO_BASE+String(surahNum).padStart(3,'0')+String(ayahNum).padStart(3,'0')+'.mp3';
+}
+
+// Initialize surah objects
+SURAH_META.forEach(m=>{
+  SURAHS.push({num:m.num,name_ar:m.name_ar,name_id:m.name_id,ayahCount:m.ayas,timeLimit:m.tl,verses:[]});
+});
+
+// DB
+const DB={students:[
+  {id:1,name:'Ahmad Fauzi',parent:'Siti Aminah',wa:'081234567890',code:'YAS-2026-0001',startDate:'2026-09-01',days:30,amount:25000,stages:{114:3,113:3,112:2},log:[{surahName:'An-Nas',date:'2 Sep 2026',stage:'Setoran',duration:25},{surahName:'Al-Falaq',date:'3 Sep 2026',stage:'Setoran',duration:30}],setoran:[],voiceNotes:[]},
+  {id:2,name:'Aisyah Putri',parent:'Bunda Rina',wa:'081298765432',code:'YAS-2026-0002',startDate:'2026-09-10',days:30,amount:25000,stages:{114:1},log:[],setoran:[],voiceNotes:[]}
+],nextId:3,nextCode:3,codes:new Set(['YAS-2026-0001','YAS-2026-0002'])};
+
+let curUser=null,curSurah=null,curStage=1,quizAns={},mediaRec=null,audioChunks=[],recBlob=null,recSec=0,remSec=0,cdTimer=null;
+// Audio state
+let curAudio=null,curPlayingAyah=-1,autoplayOn=false;
+// Admin voice note
+let adminVnRec=null,adminVnChunks=[],adminVnBlob=null;
+
+// ===== FETCH QURAN TEXT =====
+async function loadSurah(idx){
+  const s=SURAHS[idx];
+  if(s.verses.length)return;
+  try{
+    const [arRes,latRes,idRes]=await Promise.all([
+      fetch(`https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf/${s.num}.json`),
+      fetch(`https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranphoneticst-la/${s.num}.json`),
+      fetch(`https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ind-indonesianislam/${s.num}.json`)
+    ]);
+    const ar=await arRes.json(),lat=await latRes.json(),id=await idRes.json();
+    const arC=ar.chapter,latC=lat.chapter,idC=id.chapter;
+    s.verses=arC.map((v,i)=>({
+      num:v.verse,ar:v.text,lat:latC[i]?.text||'',id:idC[i]?.text||'',
+      isBismillah:i===0&&s.num!==1&&s.num!==9&&v.text.includes('بِسْمِ')
+    }));
+  }catch(e){
+    console.error('Failed to load surah',s.num,e);
+    s.verses=Array.from({length:s.ayahCount},(_,i)=>({num:i+1,ar:'جاري التحميل...',lat:'Loading...',id:'Memuat...',isBismillah:false}));
+  }
+}
+
+// ===== NAVIGATION =====
+function goScr(id){document.querySelectorAll('.scr').forEach(s=>s.classList.add('hide'));document.getElementById(id).classList.remove('hide');document.getElementById('lesson').classList.remove('on');stopAudio();window.scrollTo(0,0)}
+function fmtTime(s){const m=Math.floor(s/60),r=s%60;return r?`${m}:${r.toString().padStart(2,'0')}`:`${m} mnt`}
+function fmtTimeFull(s){const m=Math.floor(s/60),r=s%60;return`${m}:${r.toString().padStart(2,'0')}`}
+function getExpiry(s){const d=new Date(s.startDate);d.setDate(d.getDate()+s.days);return d}
+function getStatus(s){const now=new Date(),exp=getExpiry(s),diff=Math.ceil((exp-now)/(864e5));if(diff<0)return{st:'expired',lbl:'Habis',days:diff,cls:'expired',bcls:'b-dead'};if(diff<=5)return{st:'expiring',lbl:`${diff} hari lagi`,days:diff,cls:'expiring',bcls:'b-exp'};return{st:'active',lbl:`${diff} hari`,days:diff,cls:'active',bcls:'b-act'}}
+function genCode(){const n=String(DB.nextCode).padStart(4,'0');DB.nextCode++;const c=`YAS-2026-${n}`;DB.codes.add(c);return c}
+
+// ===== AUDIO FUNCTIONS =====
+function stopAudio(){
+  if(curAudio){curAudio.pause();curAudio=null}
+  curPlayingAyah=-1;
+  document.querySelectorAll('.mushaf-ayah.playing').forEach(el=>el.classList.remove('playing'));
+}
+
+function playAyah(surahNum,ayahNum){
+  stopAudio();
+  const url=ayahAudioUrl(surahNum,ayahNum);
+  curAudio=new Audio(url);
+  curPlayingAyah=ayahNum;
+  // Highlight
+  document.querySelectorAll('.mushaf-ayah').forEach(el=>el.classList.remove('playing'));
+  const el=document.getElementById(`ayah-${ayahNum}`);
+  if(el)el.classList.add('playing');
+  // Update bar
+  const barLabel=document.getElementById('audio-ayah-label');
+  const barStatus=document.getElementById('audio-status');
+  if(barLabel)barLabel.textContent=`Ayat ${ayahNum}`;
+  if(barStatus)barStatus.textContent='Memutar...';
+  const playBtn=document.getElementById('audio-main-btn');
+  if(playBtn)playBtn.textContent='⏸';
+
+  curAudio.onended=()=>{
+    if(el)el.classList.remove('playing');
+    if(playBtn)playBtn.textContent='▶';
+    if(barStatus)barStatus.textContent='Selesai';
+    curPlayingAyah=-1;
+    if(autoplayOn){
+      const s=SURAHS[curSurah];
+      const nextAyah=ayahNum+1;
+      const maxAyah=s.verses.filter(v=>!v.isBismillah).length;
+      const realNext=s.verses[0]?.isBismillah?nextAyah:nextAyah;
+      if(nextAyah<=s.ayahCount)setTimeout(()=>playAyah(surahNum,nextAyah),500);
+    }
+  };
+  curAudio.onerror=()=>{
+    if(el)el.classList.remove('playing');
+    if(barStatus)barStatus.textContent='Audio tidak tersedia';
+    if(playBtn)playBtn.textContent='▶';
+    curPlayingAyah=-1;
+  };
+  curAudio.play().catch(()=>{
+    if(barStatus)barStatus.textContent='Tap untuk memutar';
+  });
+}
+
+function togglePlayPause(){
+  if(!curAudio||curPlayingAyah===-1){
+    const s=SURAHS[curSurah];
+    playAyah(s.num,1);return;
+  }
+  if(curAudio.paused){curAudio.play();document.getElementById('audio-main-btn').textContent='⏸';document.getElementById('audio-status').textContent='Memutar...';}
+  else{curAudio.pause();document.getElementById('audio-main-btn').textContent='▶';document.getElementById('audio-status').textContent='Dijeda';}
+}
+
+function prevAyah(){
+  const s=SURAHS[curSurah];
+  const prev=Math.max(1,curPlayingAyah-1);
+  playAyah(s.num,prev);
+}
+function nextAyah(){
+  const s=SURAHS[curSurah];
+  const next=Math.min(s.ayahCount,curPlayingAyah+1);
+  playAyah(s.num,next);
+}
+
+// ===== REGISTRATION & LOGIN =====
+function doRegister(){
+  const code=document.getElementById('r-code').value.trim().toUpperCase();
+  const name=document.getElementById('r-name').value.trim();
+  const parent=document.getElementById('r-parent').value.trim();
+  const wa=document.getElementById('r-wa').value.trim();
+  if(!code){alert('Mohon masukkan kode akses');return}
+  if(!DB.codes.has(code)){alert('Kode akses tidak valid.');return}
+  if(!name||!parent||!wa){alert('Mohon lengkapi semua data');return}
+  let existing=DB.students.find(s=>s.code===code);
+  if(existing){curUser=existing;enterApp();return}
+  const st={id:DB.nextId++,name,parent,wa,code,startDate:new Date().toISOString().split('T')[0],days:30,amount:25000,stages:{},log:[],setoran:[]};
+  DB.students.push(st);curUser=st;enterApp();
+}
+
+function doLogin(){
+  const code=document.getElementById('l-code').value.trim().toUpperCase();
+  const name=document.getElementById('l-name').value.trim();
+  if(!code||!name){alert('Mohon isi kode akses dan nama');return}
+  if(!DB.codes.has(code)){alert('Kode akses tidak valid.');return}
+  let st=DB.students.find(s=>s.code===code);
+  if(!st){st={id:DB.nextId++,name,parent:'',wa:'',code,startDate:new Date().toISOString().split('T')[0],days:30,amount:25000,stages:{},log:[],setoran:[]};DB.students.push(st)}
+  curUser=st;enterApp();
+}
+
+function enterApp(){
+  document.getElementById('u-av').textContent=curUser.name.charAt(0).toUpperCase();
+  document.getElementById('u-nm').textContent=curUser.name+(curUser.parent?' · '+curUser.parent:'');
+  goScr('scr-app');renderSurahList();updateProg();
+}
+
+// ===== SURAH LIST =====
+function renderSurahList(){
+  const el=document.getElementById('surah-list');
+  el.innerHTML=SURAHS.map((s,i)=>{
+    const st=(curUser.stages||{})[s.num]||0;
+    const badges=['Mulai','Belajar','Ujian','Hafal ✓'];
+    const bcls=['st0','st1','st2','st3'];
+    return`<div class="scard" onclick="openSurah(${i})"><div class="snum ${st>=3?'done':''}">${s.num}</div><div class="sinfo"><div class="sname-ar">${s.name_ar}</div><div class="sname-id">${s.name_id}</div><div class="smeta">${s.ayahCount} ayat · ${fmtTime(s.timeLimit)}</div></div><div class="sbadge ${bcls[st]}">${badges[st]}</div></div>`;
+  }).join('');
+}
+
+async function openSurah(idx){
+  curSurah=idx;const s=SURAHS[idx];
+  document.getElementById('l-title').textContent=s.name_ar+' — '+s.name_id;
+  document.getElementById('l-sub').textContent=`${s.ayahCount} ayat`;
+  const ust=(curUser.stages||{})[s.num]||0;
+  curStage=Math.min(ust+1,3);
+  document.getElementById('scr-app').classList.add('hide');
+  document.getElementById('lesson').classList.add('on');
+  // Show loading
+  document.getElementById('stg-content').innerHTML='<div style="text-align:center;padding:40px;color:var(--inkf)">Memuat surah...</div>';
+  await loadSurah(idx);
+  updStgNav();renderStg();
+}
+
+function backToList(){
+  document.getElementById('lesson').classList.remove('on');
+  document.getElementById('scr-app').classList.remove('hide');
+  stopAudio();renderSurahList();updateProg();
+}
+
+function goStg(n){const s=SURAHS[curSurah],ust=(curUser.stages||{})[s.num]||0;if(n>ust+1)return;curStage=n;updStgNav();renderStg()}
+
+function updStgNav(){
+  const s=SURAHS[curSurah],ust=(curUser.stages||{})[s.num]||0;
+  for(let i=1;i<=3;i++){
+    const c=document.getElementById('sc'+i),l=document.getElementById('sl'+i);
+    c.className='scirc';l.className='slbl';
+    if(i<curStage||(ust>=i)){c.classList.add('dn');l.classList.add('on')}
+    if(i===curStage){c.classList.add('on');l.classList.add('on')}
+  }
+  const cn1=document.getElementById('cn1'),cn2=document.getElementById('cn2');
+  cn1.className='sconn'+(ust>=1?' dn':'');cn2.className='sconn'+(ust>=2?' dn':'');
+}
+
+function renderStg(){
+  const c=document.getElementById('stg-content');
+  if(curStage===1)rS1(c);
+  else if(curStage===2)rS2(c);
+  else rS3(c);
+}
+
+// ===== STAGE 1: MUSHAF + AUDIO =====
+function rS1(c){
+  const s=SURAHS[curSurah];
+  const rv=s.verses.filter(v=>!v.isBismillah);
+  const bismillah=s.verses.find(v=>v.isBismillah);
+
+  // Build mushaf text
+  let mushafHtml='';
+  rv.forEach((v,i)=>{
+    const ayahNumAr=toArabicNum(v.num);
+    mushafHtml+=`<span class="mushaf-ayah" id="ayah-${v.num}" onclick="onAyahTap(${s.num},${v.num},${i})">${v.ar} <span class="mushaf-ayah-num">﴿${ayahNumAr}﴾</span></span> `;
+  });
+
+  c.innerHTML=`
+    <div class="mushaf-container">
+      <div class="mushaf-page">
+        <div class="mushaf-header"><div class="mushaf-surah-name">سُورَةُ ${s.name_ar}</div></div>
+        ${bismillah?`<div class="mushaf-bismillah">${bismillah.ar}</div>`:(s.num===9?'':`<div class="mushaf-bismillah">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>`)}
+        <div class="mushaf-body"><div class="mushaf-text">${mushafHtml}</div></div>
+        <div class="mushaf-footer">جُزْءُ عَمَّ — ${s.name_id} — ${s.ayahCount} آيات</div>
+      </div>
+    </div>
+    <div id="trans-panel" class="trans-panel hide">
+      <div class="tp-ar" id="tp-ar"></div>
+      <div class="tp-lat" id="tp-lat"></div>
+      <div class="tp-id" id="tp-id"></div>
+    </div>
+    <div class="audio-autoplay"><label><input type="checkbox" id="autoplay-cb" onchange="autoplayOn=this.checked"> Putar otomatis ke ayat berikutnya</label></div>
+    <div class="audio-bar">
+      <button class="audio-play-btn" id="audio-main-btn" onclick="togglePlayPause()">▶</button>
+      <div class="audio-info"><div class="audio-ayah-label" id="audio-ayah-label">Tap ayat untuk dengar</div><div class="audio-status" id="audio-status">Syaikh Mishary Rashid Al-Afasy</div></div>
+      <div class="audio-nav">
+        <button class="audio-nav-btn" onclick="prevAyah()">⏮</button>
+        <button class="audio-nav-btn" onclick="nextAyah()">⏭</button>
+      </div>
+    </div>
+    <div class="pad" style="padding-top:16px"><button class="btn btn-p" onclick="cs1()">Lanjut ke Ujian →</button></div>`;
+}
+
+function onAyahTap(surahNum,ayahNum,idx){
+  const s=SURAHS[curSurah];
+  const v=s.verses.find(v=>v.num===ayahNum);
+  if(!v)return;
+  // Show translation panel
+  const panel=document.getElementById('trans-panel');
+  panel.classList.remove('hide');
+  document.getElementById('tp-ar').textContent=v.ar;
+  document.getElementById('tp-lat').textContent=v.lat;
+  document.getElementById('tp-id').textContent=v.id;
+  // Play audio
+  playAyah(surahNum,ayahNum);
+}
+
+function toArabicNum(n){
+  const digits='٠١٢٣٤٥٦٧٨٩';
+  return String(n).split('').map(d=>digits[parseInt(d)]).join('');
+}
+
+function cs1(){const n=SURAHS[curSurah].num;if(!curUser.stages)curUser.stages={};if((curUser.stages[n]||0)<1)curUser.stages[n]=1;curStage=2;stopAudio();updStgNav();renderStg()}
+
+// ===== STAGE 2: QUIZ =====
+function rS2(c){
+  const s=SURAHS[curSurah],rv=s.verses.filter(v=>!v.isBismillah);
+  const bc=Math.min(3,Math.max(2,Math.floor(rv.length/2)));let bi=[];
+  while(bi.length<bc){const r=Math.floor(Math.random()*rv.length);if(!bi.includes(r))bi.push(r)}
+  bi.sort((a,b)=>a-b);quizAns={};
+  const qh=bi.map((bI,qN)=>{
+    const cv=rv[bI];let opts=[{t:cv.ar,ok:true}];
+    const ov=[];SURAHS.forEach(os=>{if(os.num!==s.num&&os.verses.length)os.verses.filter(v=>!v.isBismillah).forEach(v=>ov.push(v.ar))});
+    for(let i=ov.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ov[i],ov[j]]=[ov[j],ov[i]]}
+    opts.push({t:ov[0]||'...',ok:false},{t:ov[1]||'...',ok:false});
+    for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]]}
+    const pv=bI>0?rv[bI-1].ar:s.verses[0].ar;
+    return`<div class="qcard"><div class="qprompt">Ayat ke-${bI+1}: Setelah...</div><div class="qar">${pv}</div>${opts.map((o,oi)=>`<button class="qopt" id="op${qN}${oi}" onclick="sO(${qN},${oi},${o.ok})" data-ok="${o.ok}">${o.t}</button>`).join('')}</div>`;
+  }).join('');
+  c.innerHTML=`<div class="qcon"><div class="arrinst">Pilih ayat yang benar:</div>${qh}</div><div class="pad"><button class="btn btn-p" onclick="chkF(${bi.length})">Periksa Jawaban</button></div>`;
+}
+
+function sO(q,o,ok){for(let i=0;i<3;i++){const el=document.getElementById(`op${q}${i}`);if(el)el.classList.remove('sel')}document.getElementById(`op${q}${o}`).classList.add('sel');quizAns[q]={o,ok}}
+function chkF(tq){
+  let co=0;for(let q=0;q<tq;q++){for(let i=0;i<3;i++){const el=document.getElementById(`op${q}${i}`);if(!el)continue;if(el.dataset.ok==='true')el.classList.add('ok');if(el.classList.contains('sel')&&el.dataset.ok==='false')el.classList.add('no');el.onclick=null}if(quizAns[q]&&quizAns[q].ok)co++}
+  const pc=Math.round(co/tq*100),ps=pc>=80;
+  document.querySelector('.pad').outerHTML=`<div class="score"><div class="score-big">${pc}%</div><div class="score-lbl">${co} dari ${tq} benar</div><div class="score-msg ${ps?'score-pass':'score-fail'}">${ps?'Alhamdulillah! Lanjut →':'Belum lulus, coba lagi.'}</div></div><div class="pad"><button class="btn btn-p" onclick="${ps?'cs2()':'rQ()'}">${ps?'Lanjut ke Setoran →':'Coba Lagi'}</button></div>`;
+}
+function rQ(){quizAns={};renderStg()}
+function cs2(){const n=SURAHS[curSurah].num;if(!curUser.stages)curUser.stages={};if((curUser.stages[n]||0)<2)curUser.stages[n]=2;curStage=3;updStgNav();renderStg()}
+
+// ===== STAGE 3: SETORAN + VOICE NOTE FEEDBACK =====
+function rS3(c){
+  const s=SURAHS[curSurah],st=(curUser.stages||{})[s.num]||0;
+  recBlob=null;recSec=0;remSec=s.timeLimit;
+
+  // Check for ustadz feedback
+  const setoran=curUser.setoran?.find(x=>x.surahNum===s.num);
+  let feedbackHtml='';
+  if(setoran&&setoran.feedback){
+    feedbackHtml=`<div class="vn-feedback"><div class="vn-feedback-title">🎧 Feedback dari Ustadz</div><div class="vn-play"><button class="vn-play-btn" onclick="playVnFeedback(${curSurah})">▶</button><div><div class="vn-play-info">${setoran.feedback.status==='approved'?'Disetujui ✓':'Perlu perbaikan'}</div><div class="vn-date">${setoran.feedback.date||''}</div></div></div>${setoran.feedback.note?`<div style="margin-top:8px;font-size:12px;color:var(--inks);font-style:italic">"${setoran.feedback.note}"</div>`:''}</div>`;
+  }
+
+  c.innerHTML=`<div class="vsec"><div class="vcard"><div style="font-size:40px;margin-bottom:8px">🎤</div><div style="font-family:'Amiri',serif;font-size:22px;color:var(--gd);margin-bottom:4px">${s.name_ar}</div><div style="font-size:13px;color:var(--inks);margin-bottom:12px">Rekam bacaan ${s.name_id} lengkap</div><div class="vlimit">⏱ Batas waktu: ${fmtTime(s.timeLimit)}</div><div class="vtimer" id="vt" style="margin-top:16px">${fmtTimeFull(s.timeLimit)}</div><div style="font-size:14px;color:var(--inks);margin-bottom:8px" id="vst">Tekan untuk mulai merekam</div><button class="micb idle" id="micb" onclick="tR()">🎙️</button><div id="aplay" class="hide"><div class="aplay"><button class="playb" onclick="pR()">▶</button><span style="font-size:13px;color:var(--inks)" id="rdur"></span></div></div><div style="font-size:12px;color:var(--inkf);margin-top:8px">Rekaman dikirim ke ustadz untuk diverifikasi</div></div>${feedbackHtml}<div style="margin-top:16px"><button class="btn btn-p hide" id="sub-btn" onclick="submitSetoran()">Kirim ke Ustadz untuk Verifikasi ✓</button></div>${st>=3?`<div class="score" style="margin-top:16px"><div style="font-size:40px">🏆</div><div class="score-msg score-pass" style="margin-top:8px">Surah ${s.name_id} — Hafal!</div></div>`:''}</div>`;
+}
+
+function playVnFeedback(surahIdx){
+  const s=SURAHS[surahIdx];
+  const setoran=curUser.setoran?.find(x=>x.surahNum===s.num);
+  if(setoran?.feedback?.blob){
+    const a=new Audio(URL.createObjectURL(setoran.feedback.blob));a.play();
+  }else{alert('Voice note feedback belum tersedia.')}
+}
+
+async function tR(){
+  const btn=document.getElementById('micb'),st=document.getElementById('vst');
+  if(mediaRec&&mediaRec.state==='recording'){stopRec();return}
+  try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});audioChunks=[];mediaRec=new MediaRecorder(stream);
+  mediaRec.ondataavailable=e=>{audioChunks.push(e.data)};
+  mediaRec.onstop=()=>{recBlob=new Blob(audioChunks,{type:'audio/webm'});stream.getTracks().forEach(t=>t.stop());btn.className='micb has';btn.textContent='🎙️';st.textContent='Rekaman selesai';stopCD();document.getElementById('aplay').classList.remove('hide');document.getElementById('rdur').textContent='Durasi: '+fmtTimeFull(recSec);document.getElementById('sub-btn').classList.remove('hide')};
+  mediaRec.start();btn.className='micb rec';btn.textContent='⏹️';st.textContent='Sedang merekam...';recSec=0;remSec=SURAHS[curSurah].timeLimit;startCD()
+  }catch(e){st.textContent='Tidak bisa akses mikrofon.'}
+}
+function startCD(){uCD();cdTimer=setInterval(()=>{recSec++;remSec--;uCD();if(remSec<=0){stopRec();document.getElementById('vst').textContent='Waktu habis!'}},1000)}
+function uCD(){const el=document.getElementById('vt');if(!el)return;el.textContent=fmtTimeFull(remSec);if(remSec<=15)el.classList.add('warn');else el.classList.remove('warn')}
+function stopCD(){if(cdTimer){clearInterval(cdTimer);cdTimer=null}}
+function stopRec(){if(mediaRec&&mediaRec.state==='recording')mediaRec.stop();stopCD()}
+function pR(){if(recBlob){const a=new Audio(URL.createObjectURL(recBlob));a.play()}}
+
+function submitSetoran(){
+  const s=SURAHS[curSurah];const now=new Date();
+  const setoran={surahNum:s.num,surahName:s.name_id,status:'pending',date:now.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})+' '+now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}),duration:recSec,blob:recBlob};
+  if(!curUser.setoran)curUser.setoran=[];
+  curUser.setoran=curUser.setoran.filter(x=>!(x.surahNum===s.num&&x.status==='rejected'));
+  curUser.setoran.push(setoran);
+  alert(`Setoran untuk ${s.name_id} berhasil dikirim!\n\nMenunggu verifikasi dari ustadz.`);
+  backToList();
+}
+
+// ===== TABS =====
+function stab(t){document.querySelectorAll('#scr-app .tab').forEach(b=>b.classList.remove('on'));event.target.classList.add('on');document.querySelectorAll('#scr-app .vw').forEach(v=>v.classList.add('hide'));document.getElementById('v-'+t).classList.remove('hide');if(t==='laporan')renderReport();if(t==='pesan')renderPesan()}
+
+function renderPesan(){
+  const el=document.getElementById('pesan-sec');if(!curUser)return;
+  const notes=curUser.voiceNotes||[];
+  // Also collect setoran feedback voice notes
+  const setoranFb=(curUser.setoran||[]).filter(s=>s.feedback?.blob).map(s=>({type:'setoran',surah:s.surahName,status:s.feedback.status,blob:s.feedback.blob,note:s.feedback.note,date:s.feedback.date}));
+  const allNotes=[...notes.map(n=>({...n,type:'pesan'})),...setoranFb].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+
+  if(!allNotes.length){el.innerHTML='<div class="empty"><div style="font-size:40px;margin-bottom:12px">🎧</div><div>Belum ada pesan dari ustadz</div><div style="font-size:12px;margin-top:8px;color:var(--inkf)">Voice note dari ustadz akan muncul di sini</div></div>';return}
+
+  el.innerHTML=`<div style="font-size:16px;font-weight:600;margin-bottom:16px;color:var(--gd)">🎧 Pesan dari Ustadz</div>`+allNotes.map((n,i)=>{
+    const icon=n.type==='setoran'?(n.status==='approved'?'✅':'🔄'):'💬';
+    const label=n.type==='setoran'?`Feedback Setoran: ${n.surah}`:'Pesan Suara dari Ustadz';
+    return`<div class="vn-feedback" style="margin-bottom:12px"><div class="vn-feedback-title">${icon} ${label}</div><div class="vn-play"><button class="vn-play-btn" onclick="playPesanVn(${i},'${n.type}')">▶</button><div><div class="vn-play-info">${n.note||'(Voice note)'}</div><div class="vn-date">${n.date||''}</div></div></div></div>`;
+  }).join('');
+
+  // Store reference for playback
+  window._pesanNotes=allNotes;
+}
+
+function playPesanVn(idx,type){
+  const n=window._pesanNotes?.[idx];
+  if(n?.blob){const a=new Audio(URL.createObjectURL(n.blob));a.play()}
+  else alert('Voice note tidak tersedia.')
+}
+
+// Admin: open voice note panel for any student
+function openVnPanel(studentId){
+  const panel=document.getElementById(`vn-panel-${studentId}`);
+  if(!panel)return;
+  if(!panel.classList.contains('hide')){panel.classList.add('hide');return}
+  panel.classList.remove('hide');
+  const stateKey='adm-vn-'+studentId;
+  if(!vnStates[stateKey])vnStates[stateKey]={rec:null,chunks:[],blob:null};
+
+  panel.innerHTML=`<div class="vn-rec-section" style="margin-top:12px"><div class="vn-rec-title">🎙 Kirim Pesan Suara ke Santri</div><div style="text-align:center"><button class="vn-rec-btn idle" id="vn-adm-btn-${studentId}" onclick="toggleAdmVn(${studentId})">🎤</button><div style="font-size:12px;color:var(--inks);margin-top:6px" id="vn-adm-st-${studentId}">Tekan untuk merekam</div><div id="vn-adm-play-${studentId}" class="hide" style="margin-top:8px"><button class="playb" onclick="playAdmVn(${studentId})" style="width:32px;height:32px;font-size:12px">▶</button> <span style="font-size:12px">Putar ulang</span></div></div><div class="ig" style="margin-top:12px"><label class="il">Catatan (opsional)</label><input class="ip" id="vn-adm-note-${studentId}" placeholder="Bagus, tingkatkan tajwid..."></div><button class="btn btn-p btn-sm" onclick="sendAdmVn(${studentId})" style="margin-top:8px">Kirim Pesan Suara →</button></div>`;
+}
+
+function toggleAdmVn(studentId){
+  const stateKey='adm-vn-'+studentId;
+  if(!vnStates[stateKey])vnStates[stateKey]={rec:null,chunks:[],blob:null};
+  const state=vnStates[stateKey],btn=document.getElementById(`vn-adm-btn-${studentId}`),status=document.getElementById(`vn-adm-st-${studentId}`);
+  if(state.rec&&state.rec.state==='recording'){state.rec.stop();return}
+  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+    state.chunks=[];state.rec=new MediaRecorder(stream);
+    state.rec.ondataavailable=e=>state.chunks.push(e.data);
+    state.rec.onstop=()=>{state.blob=new Blob(state.chunks,{type:'audio/webm'});stream.getTracks().forEach(t=>t.stop());btn.className='vn-rec-btn has';btn.textContent='🎤';status.textContent='Voice note siap';document.getElementById(`vn-adm-play-${studentId}`).classList.remove('hide')};
+    state.rec.start();btn.className='vn-rec-btn rec';btn.textContent='⏹';status.textContent='Merekam...';
+  }).catch(()=>{status.textContent='Tidak bisa akses mikrofon'});
+}
+
+function playAdmVn(studentId){const state=vnStates['adm-vn-'+studentId];if(state?.blob){const a=new Audio(URL.createObjectURL(state.blob));a.play()}}
+
+function sendAdmVn(studentId){
+  const state=vnStates['adm-vn-'+studentId];
+  if(!state?.blob){alert('Rekam voice note dulu');return}
+  const s=DB.students.find(x=>x.id===studentId);if(!s)return;
+  const note=document.getElementById(`vn-adm-note-${studentId}`)?.value||'';
+  if(!s.voiceNotes)s.voiceNotes=[];
+  s.voiceNotes.push({blob:state.blob,note,date:new Date().toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})});
+  state.blob=null;state.chunks=[];
+  alert(`Pesan suara berhasil dikirim ke ${s.name}!`);
+  document.getElementById(`vn-panel-${studentId}`).classList.add('hide');
+  renderAdmStudents();
+}
+function atab(t){document.querySelectorAll('#scr-admin .tab').forEach(b=>b.classList.remove('on'));event.target.classList.add('on');document.querySelectorAll('#scr-admin .vw').forEach(v=>v.classList.add('hide'));document.getElementById('v-'+t).classList.remove('hide');if(t==='akeuangan')renderRevenue();if(t==='asetoran')renderSetoran();if(t==='asantri')renderAdmStudents();if(t==='atambah')renderAddForm()}
+
+function updateProg(){if(!curUser)return;const d=Object.values(curUser.stages||{}).filter(s=>s>=3).length;document.getElementById('prog-txt').textContent=`${d} dari ${SURAHS.length} surah`;document.getElementById('prog-fill').style.width=`${(d/SURAHS.length)*100}%`}
+
+function renderReport(){
+  const el=document.getElementById('report-sec');if(!curUser)return;
+  const comp=(curUser.log||[]).filter(l=>l.stage==='Setoran');
+  const th=Object.values(curUser.stages||{}).filter(s=>s>=3).length;
+  let rows=comp.length?comp.map((l,i)=>`<tr><td>${i+1}</td><td>${l.surahName}</td><td>${l.date}</td><td>${l.duration?fmtTimeFull(l.duration):'-'}</td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--inkf);padding:24px">Belum ada hafalan selesai</td></tr>';
+  el.innerHTML=`<div class="rcard"><div style="text-align:center;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--gl)"><div style="font-size:11px;color:var(--inkf);margin-bottom:4px">YAYASAN ANAK SHOLEH 85</div><div style="font-family:'Amiri',serif;font-size:20px;color:var(--gd)">Laporan Hafalan Juz Amma</div><div style="margin-top:8px;font-size:14px"><b>${curUser.name}</b></div></div><table class="rtbl"><thead><tr><th>No</th><th>Surah</th><th>Tanggal</th><th>Durasi</th></tr></thead><tbody>${rows}</tbody></table><div class="rsum">${th} dari ${SURAHS.length} surah dihafal</div></div><div class="pad" style="margin-top:16px"><button class="btn btn-wa" onclick="shareReport()">Kirim ke WhatsApp Orang Tua 📱</button></div>`;
+}
+
+function shareReport(){
+  if(!curUser)return;const comp=(curUser.log||[]).filter(l=>l.stage==='Setoran');const th=Object.values(curUser.stages||{}).filter(s=>s>=3).length;
+  const lines=comp.map((l,i)=>`${i+1}. ${l.surahName} — ${l.date}`).join('\n');
+  const msg=`Assalamualaikum,\n\nLaporan Hafalan Juz Amma\nNama: ${curUser.name}\n\nSurah yang dihafal:\n${lines||'(Belum ada)'}\n\nTotal: ${th}/${SURAHS.length} surah\n\nYayasan Anak Sholeh 85`;
+  if(curUser.wa)window.open(`https://wa.me/${curUser.wa.replace(/^0/,'62')}?text=${encodeURIComponent(msg)}`,'_blank');else alert(msg);
+}
+
+// ===== ADMIN =====
+function doAdminLogin(){if(document.getElementById('a-pin').value!=='1234'){alert('PIN salah');return}goScr('scr-admin');renderAdmin()}
+function renderAdmin(){renderAdmStats();renderAdmFilter();renderAdmStudents();renderAddForm();renderSetoran()}
+
+function renderAdmStats(){
+  const tot=DB.students.length,act=DB.students.filter(s=>getStatus(s).st==='active').length,exp=DB.students.filter(s=>getStatus(s).st==='expiring').length,pend=DB.students.reduce((n,s)=>n+s.setoran.filter(x=>x.status==='pending').length,0);
+  document.getElementById('admin-stats').innerHTML=`<div class="stat"><div class="stat-n" style="color:var(--blue)">${tot}</div><div class="stat-l">Total</div></div><div class="stat"><div class="stat-n" style="color:var(--gd)">${act}</div><div class="stat-l">Aktif</div></div><div class="stat"><div class="stat-n" style="color:var(--org)">${exp}</div><div class="stat-l">Segera Habis</div></div><div class="stat"><div class="stat-n" style="color:var(--blue)">${pend}</div><div class="stat-l">Setoran</div></div>`;
+}
+
+let admFilter='semua';
+function renderAdmFilter(){
+  document.getElementById('adm-filter').innerHTML=['semua','active','expiring','expired'].map(f=>`<button class="fbtn ${admFilter===f?'on':''}" onclick="admFilter='${f}';renderAdmFilter();renderAdmStudents()">${f==='semua'?'Semua':f==='active'?'Aktif':f==='expiring'?'Segera Habis':'Habis'}</button>`).join('');
+}
+
+function renderAdmStudents(){
+  const q=(document.getElementById('adm-search')?.value||'').toLowerCase();
+  let list=DB.students.filter(s=>{if(q&&!s.name.toLowerCase().includes(q)&&!s.code.toLowerCase().includes(q))return false;if(admFilter!=='semua'&&getStatus(s).st!==admFilter)return false;return true});
+  list.sort((a,b)=>{const sa=getStatus(a),sb=getStatus(b);const o={expiring:0,active:1,expired:2};return(o[sa.st]||1)-(o[sb.st]||1)});
+  const el=document.getElementById('adm-list');
+  if(!list.length){el.innerHTML='<div class="empty">Tidak ada santri ditemukan</div>';return}
+  el.innerHTML=list.map(s=>{const st=getStatus(s);const hfz=Object.values(s.stages||{}).filter(x=>x>=3).length;const pend=s.setoran.filter(x=>x.status==='pending').length;
+    return`<div class="stcard ${st.cls}${pend?' pending-setoran':''}"><div class="st-top"><div class="st-name">${s.name}${pend?` <span style="color:var(--blue);font-size:12px">(${pend} setoran)</span>`:''}</div><div class="st-badge ${st.bcls}">${st.lbl}</div></div><div class="st-det">Kode: <span class="st-code">${s.code}</span><br>Orang tua: ${s.parent||'-'} | WA: ${s.wa||'-'}<br>Hafalan: ${hfz}/${SURAHS.length} surah | Pesan: ${(s.voiceNotes||[]).length}</div><div class="st-acts"><button class="abtn a-ext" onclick="extendStudent(${s.id})">+30 Hari</button><button class="abtn" style="background:#F3E5F5;color:#7B1FA2" onclick="openVnPanel(${s.id})">🎤 Pesan Suara</button>${s.wa?`<button class="abtn a-wa" onclick="window.open('https://wa.me/${s.wa.replace(/^0/,'62')}','_blank')">WhatsApp</button>`:''}</div><div id="vn-panel-${s.id}" class="hide"></div></div>`}).join('');
+}
+
+function extendStudent(id){const s=DB.students.find(x=>x.id===id);if(s){s.days+=30;s.amount+=25000;renderAdmin()}}
+
+function renderAddForm(){
+  document.getElementById('add-form').innerHTML=`<div style="font-size:16px;font-weight:600;margin-bottom:16px">Tambah Santri Baru</div><div class="ig"><label class="il">Nama Santri *</label><input class="ip" id="ad-name"></div><div class="ig"><label class="il">Nama Orang Tua</label><input class="ip" id="ad-parent"></div><div class="ig"><label class="il">No. WhatsApp</label><input class="ip" id="ad-wa" type="tel"></div><button class="btn btn-p" onclick="addStudent()">Daftarkan & Buat Kode Akses</button>`;
+}
+
+function addStudent(){
+  const name=document.getElementById('ad-name').value.trim();if(!name){alert('Nama santri wajib diisi');return}
+  const parent=document.getElementById('ad-parent').value.trim(),wa=document.getElementById('ad-wa').value.trim();
+  const code=genCode();
+  DB.students.push({id:DB.nextId++,name,parent,wa,code,startDate:new Date().toISOString().split('T')[0],days:30,amount:25000,stages:{},log:[],setoran:[]});
+  alert(`Santri ${name} terdaftar!\n\nKode Akses: ${code}\n\nKirim kode ini ke orang tua via WhatsApp.`);
+  renderAdmin();
+}
+
+// ===== ADMIN: SETORAN WITH VOICE NOTE FEEDBACK =====
+function renderSetoran(){
+  const el=document.getElementById('setoran-list');
+  let panels=[];
+  DB.students.forEach(s=>{s.setoran.filter(x=>x.status==='pending').forEach((st,si)=>{panels.push({student:s,setoran:st,si})})});
+  if(!panels.length){el.innerHTML='<div class="empty">Tidak ada setoran menunggu verifikasi</div>';return}
+  el.innerHTML=panels.map((p,pi)=>`
+    <div class="setoran-panel">
+      <div class="sp-header">🎤 Setoran: ${p.setoran.surahName}</div>
+      <div class="sp-info">Santri: <b>${p.student.name}</b><br>Tanggal: ${p.setoran.date}<br>Durasi: ${p.setoran.duration?fmtTimeFull(p.setoran.duration):'-'}</div>
+      <div class="sp-audio"><button class="playb" onclick="playSetoran(${p.student.id},${p.setoran.surahNum})">▶ Dengarkan Rekaman</button></div>
+      <div class="vn-rec-section">
+        <div class="vn-rec-title">🎙 Rekam Voice Note Feedback</div>
+        <div style="text-align:center">
+          <button class="vn-rec-btn idle" id="vn-btn-${pi}" onclick="toggleVnRec(${pi})">🎤</button>
+          <div style="font-size:12px;color:var(--inks);margin-top:6px" id="vn-status-${pi}">Tekan untuk merekam feedback</div>
+          <div id="vn-play-${pi}" class="hide" style="margin-top:8px"><button class="playb" onclick="playVnAdmin(${pi})" style="width:32px;height:32px;font-size:12px">▶</button> <span style="font-size:12px;color:var(--inks)">Putar ulang</span></div>
+        </div>
+        <div class="ig" style="margin-top:12px"><label class="il">Catatan (opsional)</label><input class="ip" id="vn-note-${pi}" placeholder="Tajwid perlu diperbaiki pada ayat 3..."></div>
+      </div>
+      <div class="sp-btns" style="margin-top:12px">
+        <button class="btn a-ok" onclick="approveSetoran(${p.student.id},${p.setoran.surahNum},${pi})">✓ Setujui</button>
+        <button class="btn a-rej" onclick="rejectSetoran(${p.student.id},${p.setoran.surahNum},${pi})">✗ Perbaiki</button>
+      </div>
+    </div>`).join('');
+}
+
+// Admin VN recording state per panel
+const vnStates={};
+function toggleVnRec(pi){
+  if(!vnStates[pi])vnStates[pi]={rec:null,chunks:[],blob:null};
+  const state=vnStates[pi],btn=document.getElementById(`vn-btn-${pi}`),status=document.getElementById(`vn-status-${pi}`);
+  if(state.rec&&state.rec.state==='recording'){
+    state.rec.stop();return;
+  }
+  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+    state.chunks=[];state.rec=new MediaRecorder(stream);
+    state.rec.ondataavailable=e=>state.chunks.push(e.data);
+    state.rec.onstop=()=>{
+      state.blob=new Blob(state.chunks,{type:'audio/webm'});
+      stream.getTracks().forEach(t=>t.stop());
+      btn.className='vn-rec-btn has';btn.textContent='🎤';
+      status.textContent='Voice note siap';
+      document.getElementById(`vn-play-${pi}`).classList.remove('hide');
+    };
+    state.rec.start();btn.className='vn-rec-btn rec';btn.textContent='⏹';status.textContent='Merekam...';
+  }).catch(()=>{status.textContent='Tidak bisa akses mikrofon'});
+}
+
+function playVnAdmin(pi){
+  if(vnStates[pi]?.blob){const a=new Audio(URL.createObjectURL(vnStates[pi].blob));a.play()}
+}
+
+function playSetoran(studentId,surahNum){
+  const s=DB.students.find(x=>x.id===studentId);
+  const st=s?.setoran.find(x=>x.surahNum===surahNum&&x.status==='pending');
+  if(st?.blob){const a=new Audio(URL.createObjectURL(st.blob));a.play()}
+  else alert('Rekaman tersedia setelah santri mengirim setoran.')
+}
+
+function approveSetoran(studentId,surahNum,pi){
+  const s=DB.students.find(x=>x.id===studentId);
+  const st=s.setoran.find(x=>x.surahNum===surahNum&&x.status==='pending');
+  if(!st)return;
+  st.status='approved';
+  if(!s.stages)s.stages={};s.stages[surahNum]=3;
+  if(!s.log)s.log=[];s.log.push({surahName:st.surahName,date:st.date,stage:'Setoran',duration:st.duration});
+  // Attach voice note feedback
+  const note=document.getElementById(`vn-note-${pi}`)?.value||'';
+  st.feedback={status:'approved',blob:vnStates[pi]?.blob||null,note,date:new Date().toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})};
+  alert(`Setoran ${st.surahName} oleh ${s.name} DISETUJUI ✓${vnStates[pi]?.blob?' (dengan voice note)':''}`);
+  renderAdmin();
+}
+
+function rejectSetoran(studentId,surahNum,pi){
+  const s=DB.students.find(x=>x.id===studentId);
+  const st=s.setoran.find(x=>x.surahNum===surahNum&&x.status==='pending');
+  if(!st)return;
+  st.status='rejected';
+  const note=document.getElementById(`vn-note-${pi}`)?.value||'';
+  st.feedback={status:'rejected',blob:vnStates[pi]?.blob||null,note,date:new Date().toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})};
+  alert(`Setoran ${st.surahName} oleh ${s.name} perlu perbaikan.${vnStates[pi]?.blob?' Voice note feedback dikirim.':''}`);
+  renderAdmin();
+}
+
+function renderRevenue(){
+  const el=document.getElementById('revenue-sec');const tot=DB.students.reduce((s,x)=>s+x.amount,0);const act=DB.students.filter(s=>getStatus(s).st!=='expired').length;
+  el.innerHTML=`<div class="revcard"><div class="revt">Ringkasan Keuangan</div><div class="revr"><span>Total Santri Terdaftar</span><span>${DB.students.length}</span></div><div class="revr"><span>Santri Aktif</span><span>${act}</span></div><div class="revr"><span>Pendapatan Terkumpul</span><span>Rp ${tot.toLocaleString('id-ID')}</span></div><div class="revtotal">Proyeksi Bulanan: Rp ${(act*25000).toLocaleString('id-ID')}</div></div>`;
+}
+
+// Init
+goScr('scr-landing');
+</script>
+</body>
+</html>
