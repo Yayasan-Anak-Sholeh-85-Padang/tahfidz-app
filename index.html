@@ -804,8 +804,16 @@ function toArabicNum(n){
 function cs1(){const n=SURAHS[curSurah].num;if(!curUser.stages)curUser.stages={};if((curUser.stages[n]||0)<1)curUser.stages[n]=1;curStage=2;stopAudio();updStgNav();renderStg()}
 
 // ===== STAGE 2: QUIZ =====
-function rS2(c){
-  const s=SURAHS[curSurah],rv=s.verses.filter(v=>!v.isBismillah);
+async function rS2(c){
+  c.innerHTML='<div style="text-align:center;padding:40px;color:var(--inkf)">Menyiapkan ujian...</div>';
+  const s=SURAHS[curSurah];
+  // Preload 3 random other surahs for wrong answer options
+  const others=SURAHS.map((_,i)=>i).filter(i=>i!==curSurah&&!SURAHS[i].verses.length);
+  for(let i=others.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[others[i],others[j]]=[others[j],others[i]]}
+  const toLoad=others.slice(0,3);
+  await Promise.all(toLoad.map(i=>loadSurah(i)));
+
+  const rv=s.verses.filter(v=>!v.isBismillah);
   const bc=Math.min(3,Math.max(2,Math.floor(rv.length/2)));let bi=[];
   while(bi.length<bc){const r=Math.floor(Math.random()*rv.length);if(!bi.includes(r))bi.push(r)}
   bi.sort((a,b)=>a-b);quizAns={};
