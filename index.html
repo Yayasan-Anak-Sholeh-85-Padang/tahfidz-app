@@ -523,6 +523,15 @@ function playAyah(surahNum,ayahNum){
   document.querySelectorAll('.mushaf-ayah').forEach(el=>el.classList.remove('playing'));
   const el=document.getElementById(`ayah-${ayahNum}`);
   if(el)el.classList.add('playing');
+  // Update translation panel
+  if(curSurah!==null){
+    const s=SURAHS[curSurah];
+    const v=s.verses.find(v=>v.num===ayahNum);
+    if(v){
+      const panel=document.getElementById('trans-panel');
+      if(panel){panel.classList.remove('hide');document.getElementById('tp-ar').textContent=v.ar;document.getElementById('tp-lat').textContent=v.lat;document.getElementById('tp-id').textContent=v.id}
+    }
+  }
   // Update bar
   const barLabel=document.getElementById('audio-ayah-label');
   const barStatus=document.getElementById('audio-status');
