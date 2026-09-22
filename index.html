@@ -164,6 +164,19 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);min
 .rtbl td{padding:10px 8px;border-bottom:1px solid #eee}
 .rsum{margin-top:16px;padding:12px;background:var(--gl);border-radius:8px;font-size:13px;color:var(--gd);text-align:center;font-weight:600}
 
+/* Certificate — minimal template, design/logo from Ardi */
+.cert{background:var(--w);border-radius:16px;padding:2px;margin:12px 16px;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.cert-inner{border:2px solid #ddd;border-radius:14px;padding:28px 20px;text-align:center;position:relative}
+.cert-logo{width:64px;height:64px;border-radius:50%;background:var(--gl);display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:12px;border:2px dashed #ccc;color:var(--inkf)}
+.cert-surah{font-family:'Amiri Quran','Amiri',serif;font-size:26px;color:var(--ink);margin:10px 0;line-height:1.4}
+.cert-name{font-size:16px;font-weight:700;color:var(--ink);margin:12px 0 4px}
+.cert-date{font-size:12px;color:var(--inkf)}
+.cert-sig{margin-top:20px;padding-top:16px;border-top:1px solid #e0e0e0}
+.cert-sig-line{width:140px;border-bottom:1px solid var(--ink);margin:24px auto 4px}
+.cert-sig-label{font-size:11px;color:var(--inkf)}
+.cert-share{display:flex;gap:8px;margin:8px 16px 0;justify-content:center}
+.cert-share button{padding:8px 16px;border-radius:8px;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+
 /* Mushaf image mode */
 .mode-toggle{display:flex;gap:8px;padding:12px 16px;background:var(--w);border-bottom:1px solid rgba(0,0,0,.06)}
 .mode-btn{flex:1;padding:10px;font-size:12px;font-weight:600;border-radius:8px;border:1.5px solid var(--gl);background:var(--w);color:var(--inks);cursor:pointer;font-family:'Inter',sans-serif;text-align:center}
@@ -312,6 +325,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);min
 <div class="hdr"><button class="back" onclick="goScr('scr-landing')">← Kembali</button><div class="hdr-title">Daftar Santri Baru</div></div>
 <div style="padding:24px">
   <div class="ig"><label class="il">Nama Lengkap Santri *</label><input class="ip" id="r-name" type="text" placeholder="Ahmad Fauzi"></div>
+  <div class="ig"><label class="il">Nama dalam Huruf Arab *</label><input class="ip" id="r-name-ar" type="text" placeholder="أحمد فوزي" style="font-family:'Amiri',serif;font-size:20px;direction:rtl;text-align:right"></div>
   <div class="ig"><label class="il">Nama Orang Tua *</label><input class="ip" id="r-parent" type="text" placeholder="Bunda Siti"></div>
   <div class="ig"><label class="il">No. WhatsApp Orang Tua *</label><input class="ip" id="r-wa" type="tel" placeholder="08123456789"></div>
   <hr style="border:none;border-top:1px solid #e0e0e0;margin:20px 0">
@@ -453,9 +467,23 @@ const MUSHAF_PAGES={
 108:[602,602],109:[603,603],110:[603,603],111:[603,603],112:[604,604],
 113:[604,604],114:[604,604]
 };
-// Mushaf page image URL (Quran.com CDN - Madinah Mushaf)
-function mushafPageUrl(page){
-  return `https://cdn.qurancdn.com/images/pages/page${page}.png`;
+// Mushaf page image URL (multiple CDN sources with fallback)
+const MUSHAF_CDNS=[
+  p=>`https://cdn.qurancdn.com/images/pages/page${String(p).padStart(3,'0')}.png`,
+  p=>`https://cdn.qurancdn.com/images/pages/page${p}.png`,
+  p=>`https://www.mp3quran.net/api/quran_pages_arabic/page${String(p).padStart(3,'0')}.png`
+];
+function mushafPageUrl(page,cdnIdx=0){
+  return (MUSHAF_CDNS[cdnIdx]||MUSHAF_CDNS[0])(page);
+}
+function mushafImgFallback(img){
+  const cdnIdx=parseInt(img.dataset.cdn||'0')+1;
+  const page=parseInt(img.dataset.page);
+  if(cdnIdx<MUSHAF_CDNS.length){
+    img.dataset.cdn=cdnIdx;img.src=mushafPageUrl(page,cdnIdx);
+  }else{
+    document.getElementById('mimg-loading').innerHTML='<div style="color:var(--org);padding:20px"><div style="font-size:28px;margin-bottom:8px">📖</div>Gambar mushaf sedang tidak tersedia.<br><br><button class="btn btn-p btn-sm" style="display:inline-block;width:auto;padding:10px 20px" onclick="switchS1Mode(\'interactive\')">Gunakan Mode Interaktif →</button></div>';
+  }
 }
 let s1Mode='interactive'; // 'mushaf' or 'interactive'
 let mushafCurPage=582;
@@ -467,8 +495,8 @@ SURAH_META.forEach(m=>{
 
 // DB
 const DB={students:[
-  {id:1,name:'Ahmad Fauzi',parent:'Siti Aminah',wa:'081234567890',code:'YAS-2026-0001',startDate:'2026-09-01',days:30,amount:25000,stages:{114:3,113:3,112:2},log:[{surahName:'An-Nas',date:'2 Sep 2026',stage:'Setoran',duration:25},{surahName:'Al-Falaq',date:'3 Sep 2026',stage:'Setoran',duration:30}],setoran:[],voiceNotes:[]},
-  {id:2,name:'Aisyah Putri',parent:'Bunda Rina',wa:'081298765432',code:'YAS-2026-0002',startDate:'2026-09-10',days:30,amount:25000,stages:{114:1},log:[],setoran:[],voiceNotes:[]}
+  {id:1,name:'Ahmad Fauzi',nameAr:'أحمد فوزي',parent:'Siti Aminah',wa:'081234567890',code:'YAS-2026-0001',startDate:'2026-09-01',days:30,amount:25000,stages:{114:3,113:3,112:2},log:[{surahName:'An-Nas',date:'2 Sep 2026',stage:'Setoran',duration:25},{surahName:'Al-Falaq',date:'3 Sep 2026',stage:'Setoran',duration:30}],setoran:[],voiceNotes:[]},
+  {id:2,name:'Aisyah Putri',nameAr:'عائشة فتري',parent:'Bunda Rina',wa:'081298765432',code:'YAS-2026-0002',startDate:'2026-09-10',days:30,amount:25000,stages:{114:1},log:[],setoran:[],voiceNotes:[]}
 ],nextId:3,nextCode:3,codes:new Set(['YAS-2026-0001','YAS-2026-0002'])};
 
 let curUser=null,curSurah=null,curStage=1,quizAns={},mediaRec=null,audioChunks=[],recBlob=null,recSec=0,remSec=0,cdTimer=null;
@@ -588,14 +616,15 @@ function nextAyah(){
 function doRegister(){
   const code=document.getElementById('r-code').value.trim().toUpperCase();
   const name=document.getElementById('r-name').value.trim();
+  const nameAr=document.getElementById('r-name-ar').value.trim();
   const parent=document.getElementById('r-parent').value.trim();
   const wa=document.getElementById('r-wa').value.trim();
   if(!code){alert('Mohon masukkan kode akses');return}
   if(!DB.codes.has(code)){alert('Kode akses tidak valid.');return}
-  if(!name||!parent||!wa){alert('Mohon lengkapi semua data');return}
+  if(!name||!nameAr||!parent||!wa){alert('Mohon lengkapi semua data');return}
   let existing=DB.students.find(s=>s.code===code);
-  if(existing){curUser=existing;enterApp();return}
-  const st={id:DB.nextId++,name,parent,wa,code,startDate:new Date().toISOString().split('T')[0],days:30,amount:25000,stages:{},log:[],setoran:[]};
+  if(existing){if(nameAr&&!existing.nameAr)existing.nameAr=nameAr;curUser=existing;enterApp();return}
+  const st={id:DB.nextId++,name,nameAr,parent,wa,code,startDate:new Date().toISOString().split('T')[0],days:30,amount:25000,stages:{},log:[],setoran:[]};
   DB.students.push(st);curUser=st;enterApp();
 }
 
@@ -713,7 +742,7 @@ function renderMushafImg(c){
   const startP=pages[0],endP=pages[1];
 
   let imgHtml=`<div class="mushaf-img-wrap">
-    <div class="mushaf-img-frame"><div class="mushaf-img-loading" id="mimg-loading">Memuat halaman mushaf...</div><img id="mimg" src="${mushafPageUrl(mushafCurPage)}" alt="Mushaf halaman ${mushafCurPage}" style="display:none" onload="this.style.display='block';document.getElementById('mimg-loading').style.display='none'" onerror="document.getElementById('mimg-loading').innerHTML='<div style=\\'color:var(--red)\\'>Gambar tidak tersedia. Coba mode Interaktif.</div>'"></div>
+    <div class="mushaf-img-frame"><div class="mushaf-img-loading" id="mimg-loading">Memuat halaman mushaf...</div><img id="mimg" src="${mushafPageUrl(mushafCurPage,0)}" data-cdn="0" data-page="${mushafCurPage}" alt="Mushaf halaman ${mushafCurPage}" style="display:none" onload="this.style.display='block';document.getElementById('mimg-loading').style.display='none'" onerror="mushafImgFallback(this)"></div>
     ${startP!==endP?`<div class="mushaf-pg-nav"><button class="mpnb" onclick="mushafPgNav(-1)" id="mprev" ${mushafCurPage<=startP?'disabled':''}>← Sebelumnya</button><span style="font-size:13px;color:var(--inks)" id="mpg-label">Hal. ${mushafCurPage} dari ${startP}–${endP}</span><button class="mpnb" onclick="mushafPgNav(1)" id="mnext" ${mushafCurPage>=endP?'disabled':''}>Berikutnya →</button></div>`:`<div class="mushaf-page-num">Halaman ${mushafCurPage} — Mushaf Madinah</div>`}
   </div>`;
 
@@ -733,7 +762,7 @@ function mushafPgNav(dir){
   mushafCurPage=Math.max(pages[0],Math.min(pages[1],mushafCurPage+dir));
   const img=document.getElementById('mimg');
   const loading=document.getElementById('mimg-loading');
-  if(img){img.style.display='none';img.src=mushafPageUrl(mushafCurPage)}
+  if(img){img.style.display='none';img.dataset.cdn='0';img.dataset.page=mushafCurPage;img.src=mushafPageUrl(mushafCurPage,0)}
   if(loading)loading.style.display='block';
   const prev=document.getElementById('mprev'),next=document.getElementById('mnext'),lbl=document.getElementById('mpg-label');
   if(prev)prev.disabled=mushafCurPage<=pages[0];
@@ -838,14 +867,23 @@ async function rS2(c){
     opts.push({t:ov[0]||'...',ok:false},{t:ov[1]||'...',ok:false});
     for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]]}
     const pv=bI>0?rv[bI-1].ar:s.verses[0].ar;
-    return`<div class="qcard"><div class="qprompt">Apa ayat setelah ini:</div><div class="qar">${pv}</div>${opts.map((o,oi)=>`<button class="qopt" id="op${qN}${oi}" onclick="sO(${qN},${oi},${o.ok})" data-ok="${o.ok}">${o.t}</button>`).join('')}</div>`;
+    return`<div class="qcard"><div class="qprompt">Soal ${qN+1}: Ayat di bawah ini ada di dalam surah <b>${s.name_id}</b>. Pilih ayat yang datang <u>tepat sesudahnya</u>.</div><div class="qar">${pv}</div><div style="font-size:12px;color:var(--inkf);margin-bottom:10px;text-align:center">👆 Pilih satu jawaban • Tap lagi untuk membatalkan</div>${opts.map((o,oi)=>`<button class="qopt" id="op${qN}${oi}" onclick="sO(${qN},${oi},${o.ok})" data-ok="${o.ok}">${o.t}</button>`).join('')}</div>`;
   }).join('');
-  c.innerHTML=`<div class="qcon"><div class="arrinst">Pilih ayat yang benar:</div>${qh}</div><div class="pad"><button class="btn btn-p" onclick="chkF(${bi.length})">Periksa Jawaban</button></div>`;
+  c.innerHTML=`<div class="qcon"><div class="arrinst">📝 Ujian Hafalan: ${s.name_id}</div><div style="text-align:center;font-size:13px;color:var(--inks);margin:-8px 16px 16px;line-height:1.5;padding:12px;background:var(--bluel);border-radius:8px">Untuk setiap soal, baca ayat yang diberikan, lalu pilih ayat yang datang <b>tepat sesudahnya</b>.<br>Jawaban bisa diubah sebelum menekan "Periksa".</div>${qh}</div><div class="pad"><button class="btn btn-p" onclick="chkF(${bi.length})">Periksa Jawaban →</button></div>`;
 }
 
-function sO(q,o,ok){for(let i=0;i<3;i++){const el=document.getElementById(`op${q}${i}`);if(el)el.classList.remove('sel')}document.getElementById(`op${q}${o}`).classList.add('sel');quizAns[q]={o,ok}}
+function sO(q,o,ok){
+  const el=document.getElementById(`op${q}${o}`);
+  // If tapping same selected answer → deselect (undo)
+  if(el&&el.classList.contains('sel')){el.classList.remove('sel');delete quizAns[q];return}
+  for(let i=0;i<4;i++){const e=document.getElementById(`op${q}${i}`);if(e)e.classList.remove('sel')}
+  el.classList.add('sel');quizAns[q]={o,ok}
+}
 function chkF(tq){
-  let co=0;for(let q=0;q<tq;q++){for(let i=0;i<3;i++){const el=document.getElementById(`op${q}${i}`);if(!el)continue;if(el.dataset.ok==='true')el.classList.add('ok');if(el.classList.contains('sel')&&el.dataset.ok==='false')el.classList.add('no');el.onclick=null}if(quizAns[q]&&quizAns[q].ok)co++}
+  // Check all questions answered
+  let unanswered=0;for(let q=0;q<tq;q++){if(!quizAns[q])unanswered++}
+  if(unanswered>0){alert(`Masih ada ${unanswered} soal belum dijawab. Silakan jawab semua soal dulu.`);return}
+  let co=0;for(let q=0;q<tq;q++){for(let i=0;i<4;i++){const el=document.getElementById(`op${q}${i}`);if(!el)continue;if(el.dataset.ok==='true')el.classList.add('ok');if(el.classList.contains('sel')&&el.dataset.ok==='false')el.classList.add('no');el.onclick=null}if(quizAns[q]&&quizAns[q].ok)co++}
   const pc=Math.round(co/tq*100),ps=pc>=80;
   document.querySelector('.pad').outerHTML=`<div class="score"><div class="score-big">${pc}%</div><div class="score-lbl">${co} dari ${tq} benar</div><div class="score-msg ${ps?'score-pass':'score-fail'}">${ps?'Alhamdulillah! Lanjut →':'Belum lulus, coba lagi.'}</div></div><div class="pad"><button class="btn btn-p" onclick="${ps?'cs2()':'rQ()'}">${ps?'Lanjut ke Setoran →':'Coba Lagi'}</button></div>`;
 }
@@ -922,10 +960,14 @@ function renderPesan(){
   window._pesanNotes=allNotes;
 }
 
+let pesanAudio=null;
 function playPesanVn(idx,type){
+  if(pesanAudio){pesanAudio.pause();pesanAudio=null}
   const n=window._pesanNotes?.[idx];
-  if(n?.blob){const a=new Audio(URL.createObjectURL(n.blob));a.play()}
-  else alert('Voice note tidak tersedia.')
+  if(!n?.blob){alert('Voice note tidak tersedia.');return}
+  pesanAudio=new Audio(URL.createObjectURL(n.blob));
+  pesanAudio.play();
+  pesanAudio.onended=()=>{pesanAudio=null};
 }
 
 // Admin: open voice note panel for any student
@@ -937,23 +979,46 @@ function openVnPanel(studentId){
   const stateKey='adm-vn-'+studentId;
   if(!vnStates[stateKey])vnStates[stateKey]={rec:null,chunks:[],blob:null};
 
-  panel.innerHTML=`<div class="vn-rec-section" style="margin-top:12px"><div class="vn-rec-title">🎙 Kirim Pesan Suara ke Santri</div><div style="text-align:center"><button class="vn-rec-btn idle" id="vn-adm-btn-${studentId}" onclick="toggleAdmVn(${studentId})">🎤</button><div style="font-size:12px;color:var(--inks);margin-top:6px" id="vn-adm-st-${studentId}">Tekan untuk merekam</div><div id="vn-adm-play-${studentId}" class="hide" style="margin-top:8px"><button class="playb" onclick="playAdmVn(${studentId})" style="width:32px;height:32px;font-size:12px">▶</button> <span style="font-size:12px">Putar ulang</span></div></div><div class="ig" style="margin-top:12px"><label class="il">Catatan (opsional)</label><input class="ip" id="vn-adm-note-${studentId}" placeholder="Bagus, tingkatkan tajwid..."></div><button class="btn btn-p btn-sm" onclick="sendAdmVn(${studentId})" style="margin-top:8px">Kirim Pesan Suara →</button></div>`;
+  panel.innerHTML=`<div class="vn-rec-section" style="margin-top:12px"><div class="vn-rec-title">🎙 Kirim Pesan Suara ke Santri</div><div style="text-align:center"><button class="vn-rec-btn idle" id="vn-adm-btn-${studentId}" onclick="toggleAdmVn(${studentId})">🎤</button><div style="font-size:12px;color:var(--inks);margin-top:6px" id="vn-adm-st-${studentId}">Tekan untuk merekam</div><div id="vn-adm-play-${studentId}" class="hide" style="margin-top:8px;display:inline-flex;align-items:center;gap:8px"><button class="playb" id="vn-adm-playbtn-${studentId}" onclick="playAdmVn(${studentId})" style="width:32px;height:32px;font-size:12px">▶</button> <span style="font-size:12px">Putar ulang</span></div><div id="vn-adm-del-${studentId}" class="hide" style="margin-top:6px"><button onclick="deleteAdmVn(${studentId})" style="background:var(--redl);color:var(--red);border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">🗑 Hapus & Rekam Ulang</button></div></div><div class="ig" style="margin-top:12px"><label class="il">Catatan (opsional)</label><input class="ip" id="vn-adm-note-${studentId}" placeholder="Bagus, tingkatkan tajwid..."></div><button class="btn btn-p btn-sm" onclick="sendAdmVn(${studentId})" style="margin-top:8px">Kirim Pesan Suara →</button></div>`;
 }
 
 function toggleAdmVn(studentId){
   const stateKey='adm-vn-'+studentId;
-  if(!vnStates[stateKey])vnStates[stateKey]={rec:null,chunks:[],blob:null};
+  if(!vnStates[stateKey])vnStates[stateKey]={rec:null,chunks:[],blob:null,stream:null,audio:null};
   const state=vnStates[stateKey],btn=document.getElementById(`vn-adm-btn-${studentId}`),status=document.getElementById(`vn-adm-st-${studentId}`);
   if(state.rec&&state.rec.state==='recording'){state.rec.stop();return}
   navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-    state.chunks=[];state.rec=new MediaRecorder(stream);
+    state.chunks=[];state.stream=stream;state.rec=new MediaRecorder(stream);
     state.rec.ondataavailable=e=>state.chunks.push(e.data);
-    state.rec.onstop=()=>{state.blob=new Blob(state.chunks,{type:'audio/webm'});stream.getTracks().forEach(t=>t.stop());btn.className='vn-rec-btn has';btn.textContent='🎤';status.textContent='Voice note siap';document.getElementById(`vn-adm-play-${studentId}`).classList.remove('hide')};
-    state.rec.start();btn.className='vn-rec-btn rec';btn.textContent='⏹';status.textContent='Merekam...';
+    state.rec.onstop=()=>{state.blob=new Blob(state.chunks,{type:'audio/webm'});stream.getTracks().forEach(t=>t.stop());state.stream=null;btn.className='vn-rec-btn has';btn.textContent='🎤';status.textContent='Voice note siap — dengarkan atau hapus';document.getElementById(`vn-adm-play-${studentId}`).classList.remove('hide');document.getElementById(`vn-adm-del-${studentId}`).classList.remove('hide')};
+    state.rec.start();btn.className='vn-rec-btn rec';btn.textContent='⏹';status.textContent='Merekam... (tekan untuk berhenti)';
   }).catch(()=>{status.textContent='Tidak bisa akses mikrofon'});
 }
 
-function playAdmVn(studentId){const state=vnStates['adm-vn-'+studentId];if(state?.blob){const a=new Audio(URL.createObjectURL(state.blob));a.play()}}
+function playAdmVn(studentId){
+  const state=vnStates['adm-vn-'+studentId];if(!state?.blob)return;
+  if(state.audio){state.audio.pause();state.audio=null}
+  const playBtn=document.getElementById(`vn-adm-playbtn-${studentId}`);
+  state.audio=new Audio(URL.createObjectURL(state.blob));
+  playBtn.textContent='⏸';
+  state.audio.onended=()=>{playBtn.textContent='▶';state.audio=null};
+  state.audio.play();
+  playBtn.onclick=function(){
+    if(state.audio&&!state.audio.paused){state.audio.pause();playBtn.textContent='▶'}
+    else if(state.audio){state.audio.play();playBtn.textContent='⏸'}
+    else playAdmVn(studentId);
+  };
+}
+
+function deleteAdmVn(studentId){
+  if(!confirm('Hapus voice note ini?'))return;
+  const stateKey='adm-vn-'+studentId;const state=vnStates[stateKey];
+  if(state){if(state.audio){state.audio.pause();state.audio=null}if(state.rec&&state.rec.state==='recording')state.rec.stop();if(state.stream){state.stream.getTracks().forEach(t=>t.stop())}state.blob=null;state.chunks=[];state.rec=null}
+  const btn=document.getElementById(`vn-adm-btn-${studentId}`),status=document.getElementById(`vn-adm-st-${studentId}`);
+  btn.className='vn-rec-btn idle';btn.textContent='🎤';status.textContent='Tekan untuk merekam';
+  document.getElementById(`vn-adm-play-${studentId}`).classList.add('hide');
+  document.getElementById(`vn-adm-del-${studentId}`).classList.add('hide');
+}
 
 function sendAdmVn(studentId){
   const state=vnStates['adm-vn-'+studentId];
@@ -975,8 +1040,63 @@ function renderReport(){
   const el=document.getElementById('report-sec');if(!curUser)return;
   const comp=(curUser.log||[]).filter(l=>l.stage==='Setoran');
   const th=Object.values(curUser.stages||{}).filter(s=>s>=3).length;
-  let rows=comp.length?comp.map((l,i)=>`<tr><td>${i+1}</td><td>${l.surahName}</td><td>${l.date}</td><td>${l.duration?fmtTimeFull(l.duration):'-'}</td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--inkf);padding:24px">Belum ada hafalan selesai</td></tr>';
-  el.innerHTML=`<div class="rcard"><div style="text-align:center;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--gl)"><div style="font-size:11px;color:var(--inkf);margin-bottom:4px">YAYASAN ANAK SHOLEH 85</div><div style="font-family:'Amiri',serif;font-size:20px;color:var(--gd)">Laporan Hafalan Juz Amma</div><div style="margin-top:8px;font-size:14px"><b>${curUser.name}</b></div></div><table class="rtbl"><thead><tr><th>No</th><th>Surah</th><th>Tanggal</th><th>Durasi</th></tr></thead><tbody>${rows}</tbody></table><div class="rsum">${th} dari ${SURAHS.length} surah dihafal</div></div><div class="pad" style="margin-top:16px"><button class="btn btn-wa" onclick="shareReport()">Kirim ke WhatsApp Orang Tua 📱</button></div>`;
+
+  // Summary header
+  let html=`<div style="text-align:center;padding:24px 16px 8px">
+    <div style="font-size:48px;margin-bottom:8px">${th>0?'🏆':'📖'}</div>
+    <div style="font-family:'Amiri',serif;font-size:22px;color:var(--gd);margin-bottom:4px">Pencapaian Hafalan</div>
+    <div style="font-size:15px;font-weight:700;color:var(--ink)">${curUser.name}</div>
+    <div style="margin-top:12px;display:inline-block;background:linear-gradient(135deg,var(--gd),var(--gm));color:var(--w);padding:10px 24px;border-radius:20px;font-size:14px;font-weight:700">${th} / ${SURAHS.length} Surah Dihafal</div>
+    <div style="margin-top:12px;width:100%;max-width:280px;display:inline-block"><div style="height:8px;background:var(--gl);border-radius:4px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,var(--gd),var(--gold));border-radius:4px;width:${(th/SURAHS.length)*100}%"></div></div></div>
+  </div>`;
+
+  // Certificates for each completed surah
+  if(comp.length){
+    html+=`<div style="padding:8px 0 0;font-size:14px;font-weight:600;color:var(--gd);text-align:center;margin-top:8px">🎓 Sertifikat Hafalan</div>`;
+    comp.forEach((l,i)=>{
+      const surahData=SURAHS.find(s=>s.name_id===l.surahName);
+      const arabicName=surahData?surahData.name_ar:l.surahName;
+      html+=`<div class="cert"><div class="cert-inner">
+        <div class="cert-logo">LOGO</div>
+        <div style="font-size:12px;color:var(--inks);letter-spacing:.5px;margin-bottom:4px">SERTIFIKAT HAFALAN</div>
+        <div class="cert-surah">${arabicName}</div>
+        <div style="font-size:14px;color:var(--inks)">${l.surahName}</div>
+        <div class="cert-name" style="font-family:'Amiri',serif;font-size:22px;direction:rtl">${curUser.nameAr||curUser.name}</div>
+        <div class="cert-date">${l.date}</div>
+        <div class="cert-sig">
+          <div class="cert-sig-line"></div>
+          <div class="cert-sig-label">Tanda Tangan Digital</div>
+        </div>
+      </div></div>
+      <div class="cert-share">
+        <button style="background:var(--gl);color:var(--gd)" onclick="shareCert('${l.surahName}','${l.date}')">📤 Share</button>
+        <button style="background:#25D366;color:var(--w)" onclick="shareWaCert('${l.surahName}','${l.date}')">💬 WhatsApp</button>
+      </div>`;
+    });
+  }else{
+    html+=`<div style="text-align:center;padding:32px 16px;color:var(--inkf)"><div style="font-size:36px;margin-bottom:12px">📚</div>Belum ada surah yang selesai dihafal.<br><span style="font-size:12px">Mulai belajar dan dapatkan sertifikat pertamamu!</span></div>`;
+  }
+
+  // Summary table
+  if(comp.length){
+    let rows=comp.map((l,i)=>`<tr><td style="text-align:center">${i+1}</td><td>${l.surahName}</td><td>${l.date}</td><td>${l.duration?fmtTimeFull(l.duration):'-'}</td></tr>`).join('');
+    html+=`<div class="rcard" style="margin-top:8px"><div style="font-size:13px;font-weight:600;color:var(--gd);margin-bottom:12px">📋 Ringkasan Lengkap</div><table class="rtbl"><thead><tr><th>No</th><th>Surah</th><th>Tanggal</th><th>Durasi</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  html+=`<div class="pad" style="margin-top:16px"><button class="btn btn-wa" onclick="shareReport()">Kirim Laporan ke WhatsApp 📱</button></div>`;
+  el.innerHTML=html;
+}
+
+function shareCert(surahName,date){
+  const text=`Alhamdulillah! 🌟\n\n${curUser.name} telah menghafal Surah ${surahName}\n📅 ${date}\n\nTahfidz Juz Amma — Yayasan Anak Sholeh 85, Padang`;
+  if(navigator.share){navigator.share({title:'Sertifikat Hafalan',text}).catch(()=>{})}
+  else{navigator.clipboard?.writeText(text);alert('Teks sertifikat disalin!')}
+}
+
+function shareWaCert(surahName,date){
+  const text=`Alhamdulillah! 🌟\n\n${curUser.name} telah menghafal Surah ${surahName}\n📅 ${date}\n\nTahfidz Juz Amma — Yayasan Anak Sholeh 85, Padang`;
+  const wa=curUser.wa?curUser.wa.replace(/^0/,'62'):'';
+  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(text)}`,'_blank');
 }
 
 function shareReport(){
@@ -1013,14 +1133,15 @@ function renderAdmStudents(){
 function extendStudent(id){const s=DB.students.find(x=>x.id===id);if(s){s.days+=30;s.amount+=25000;renderAdmin()}}
 
 function renderAddForm(){
-  document.getElementById('add-form').innerHTML=`<div style="font-size:16px;font-weight:600;margin-bottom:16px">Tambah Santri Baru</div><div class="ig"><label class="il">Nama Santri *</label><input class="ip" id="ad-name"></div><div class="ig"><label class="il">Nama Orang Tua</label><input class="ip" id="ad-parent"></div><div class="ig"><label class="il">No. WhatsApp</label><input class="ip" id="ad-wa" type="tel"></div><button class="btn btn-p" onclick="addStudent()">Daftarkan & Buat Kode Akses</button>`;
+  document.getElementById('add-form').innerHTML=`<div style="font-size:16px;font-weight:600;margin-bottom:16px">Tambah Santri Baru</div><div class="ig"><label class="il">Nama Santri *</label><input class="ip" id="ad-name"></div><div class="ig"><label class="il">Nama dalam Huruf Arab *</label><input class="ip" id="ad-name-ar" style="font-family:'Amiri',serif;font-size:20px;direction:rtl;text-align:right" placeholder="أحمد فوزي"></div><div class="ig"><label class="il">Nama Orang Tua</label><input class="ip" id="ad-parent"></div><div class="ig"><label class="il">No. WhatsApp</label><input class="ip" id="ad-wa" type="tel"></div><button class="btn btn-p" onclick="addStudent()">Daftarkan & Buat Kode Akses</button>`;
 }
 
 function addStudent(){
   const name=document.getElementById('ad-name').value.trim();if(!name){alert('Nama santri wajib diisi');return}
+  const nameAr=document.getElementById('ad-name-ar').value.trim();
   const parent=document.getElementById('ad-parent').value.trim(),wa=document.getElementById('ad-wa').value.trim();
   const code=genCode();
-  DB.students.push({id:DB.nextId++,name,parent,wa,code,startDate:new Date().toISOString().split('T')[0],days:30,amount:25000,stages:{},log:[],setoran:[]});
+  DB.students.push({id:DB.nextId++,name,nameAr,parent,wa,code,startDate:new Date().toISOString().split('T')[0],days:30,amount:25000,stages:{},log:[],setoran:[]});
   alert(`Santri ${name} terdaftar!\n\nKode Akses: ${code}\n\nKirim kode ini ke orang tua via WhatsApp.`);
   renderAdmin();
 }
@@ -1041,7 +1162,8 @@ function renderSetoran(){
         <div style="text-align:center">
           <button class="vn-rec-btn idle" id="vn-btn-${pi}" onclick="toggleVnRec(${pi})">🎤</button>
           <div style="font-size:12px;color:var(--inks);margin-top:6px" id="vn-status-${pi}">Tekan untuk merekam feedback</div>
-          <div id="vn-play-${pi}" class="hide" style="margin-top:8px"><button class="playb" onclick="playVnAdmin(${pi})" style="width:32px;height:32px;font-size:12px">▶</button> <span style="font-size:12px;color:var(--inks)">Putar ulang</span></div>
+          <div id="vn-play-${pi}" class="hide" style="margin-top:8px;display:inline-flex;align-items:center;gap:8px"><button class="playb" onclick="playVnAdmin(${pi})" style="width:32px;height:32px;font-size:12px">▶</button> <span style="font-size:12px;color:var(--inks)">Putar ulang</span></div>
+          <div id="vn-del-${pi}" class="hide" style="margin-top:6px"><button onclick="deleteVnAdmin(${pi})" style="background:var(--redl);color:var(--red);border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">🗑 Hapus & Rekam Ulang</button></div>
         </div>
         <div class="ig" style="margin-top:12px"><label class="il">Catatan (opsional)</label><input class="ip" id="vn-note-${pi}" placeholder="Tajwid perlu diperbaiki pada ayat 3..."></div>
       </div>
@@ -1055,34 +1177,81 @@ function renderSetoran(){
 // Admin VN recording state per panel
 const vnStates={};
 function toggleVnRec(pi){
-  if(!vnStates[pi])vnStates[pi]={rec:null,chunks:[],blob:null};
+  if(!vnStates[pi])vnStates[pi]={rec:null,chunks:[],blob:null,stream:null,audio:null};
   const state=vnStates[pi],btn=document.getElementById(`vn-btn-${pi}`),status=document.getElementById(`vn-status-${pi}`);
   if(state.rec&&state.rec.state==='recording'){
     state.rec.stop();return;
   }
   navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-    state.chunks=[];state.rec=new MediaRecorder(stream);
+    state.chunks=[];state.stream=stream;state.rec=new MediaRecorder(stream);
     state.rec.ondataavailable=e=>state.chunks.push(e.data);
     state.rec.onstop=()=>{
       state.blob=new Blob(state.chunks,{type:'audio/webm'});
-      stream.getTracks().forEach(t=>t.stop());
+      stream.getTracks().forEach(t=>t.stop());state.stream=null;
       btn.className='vn-rec-btn has';btn.textContent='🎤';
-      status.textContent='Voice note siap';
+      status.textContent='Voice note siap — dengarkan atau hapus';
       document.getElementById(`vn-play-${pi}`).classList.remove('hide');
+      document.getElementById(`vn-del-${pi}`).classList.remove('hide');
     };
-    state.rec.start();btn.className='vn-rec-btn rec';btn.textContent='⏹';status.textContent='Merekam...';
+    state.rec.start();btn.className='vn-rec-btn rec';btn.textContent='⏹';status.textContent='Merekam... (tekan untuk berhenti)';
   }).catch(()=>{status.textContent='Tidak bisa akses mikrofon'});
 }
 
 function playVnAdmin(pi){
-  if(vnStates[pi]?.blob){const a=new Audio(URL.createObjectURL(vnStates[pi].blob));a.play()}
+  const state=vnStates[pi];if(!state?.blob)return;
+  // Stop previous playback
+  if(state.audio){state.audio.pause();state.audio=null}
+  const playBtn=document.querySelector(`#vn-play-${pi} .playb`);
+  state.audio=new Audio(URL.createObjectURL(state.blob));
+  playBtn.textContent='⏸';
+  state.audio.onended=()=>{playBtn.textContent='▶';state.audio=null};
+  state.audio.play();
+  // Toggle on click
+  playBtn.onclick=function(){
+    if(state.audio&&!state.audio.paused){state.audio.pause();playBtn.textContent='▶'}
+    else if(state.audio){state.audio.play();playBtn.textContent='⏸'}
+    else playVnAdmin(pi);
+  };
 }
 
+function deleteVnAdmin(pi){
+  if(!confirm('Hapus voice note ini?'))return;
+  const state=vnStates[pi];
+  if(state){
+    if(state.audio){state.audio.pause();state.audio=null}
+    if(state.rec&&state.rec.state==='recording'){state.rec.stop()}
+    if(state.stream){state.stream.getTracks().forEach(t=>t.stop())}
+    state.blob=null;state.chunks=[];state.rec=null;
+  }
+  const btn=document.getElementById(`vn-btn-${pi}`),status=document.getElementById(`vn-status-${pi}`);
+  btn.className='vn-rec-btn idle';btn.textContent='🎤';
+  status.textContent='Tekan untuk merekam feedback';
+  document.getElementById(`vn-play-${pi}`).classList.add('hide');
+  document.getElementById(`vn-del-${pi}`).classList.add('hide');
+}
+
+let adminPlayingAudio=null;
 function playSetoran(studentId,surahNum){
+  // Stop any currently playing audio first
+  if(adminPlayingAudio){adminPlayingAudio.pause();adminPlayingAudio=null}
   const s=DB.students.find(x=>x.id===studentId);
   const st=s?.setoran.find(x=>x.surahNum===surahNum&&x.status==='pending');
-  if(st?.blob){const a=new Audio(URL.createObjectURL(st.blob));a.play()}
-  else alert('Rekaman tersedia setelah santri mengirim setoran.')
+  if(!st?.blob){alert('Rekaman tersedia setelah santri mengirim setoran.');return}
+  const btn=event.target;
+  const origText=btn.textContent;
+  adminPlayingAudio=new Audio(URL.createObjectURL(st.blob));
+  btn.textContent='⏸ Jeda';btn.style.background='var(--red)';btn.style.color='var(--w)';
+  adminPlayingAudio.onended=()=>{btn.textContent=origText;btn.style.background='';btn.style.color='';adminPlayingAudio=null};
+  adminPlayingAudio.onerror=()=>{btn.textContent=origText;btn.style.background='';btn.style.color='';adminPlayingAudio=null};
+  // Toggle play/pause on same button
+  btn.onclick=function(){
+    if(adminPlayingAudio&&!adminPlayingAudio.paused){
+      adminPlayingAudio.pause();btn.textContent='▶ Lanjut';btn.style.background='var(--gd)';btn.style.color='var(--w)';
+    }else if(adminPlayingAudio){
+      adminPlayingAudio.play();btn.textContent='⏸ Jeda';btn.style.background='var(--red)';btn.style.color='var(--w)';
+    }
+  };
+  adminPlayingAudio.play();
 }
 
 function approveSetoran(studentId,surahNum,pi){
