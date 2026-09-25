@@ -856,7 +856,7 @@ async function rS2(c){
 
   const rv=s.verses.filter(v=>!v.isBismillah);
   const bc=Math.min(3,Math.max(2,Math.floor(rv.length/2)));let bi=[];
-  while(bi.length<bc){const r=Math.floor(Math.random()*rv.length);if(!bi.includes(r))bi.push(r)}
+  while(bi.length<bc){const r=1+Math.floor(Math.random()*(rv.length-1));if(!bi.includes(r))bi.push(r)}
   bi.sort((a,b)=>a-b);quizAns={};
   const qh=bi.map((bI,qN)=>{
     const cv=rv[bI];let opts=[{t:cv.ar,ok:true}];
@@ -864,7 +864,7 @@ async function rS2(c){
     for(let i=ov.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ov[i],ov[j]]=[ov[j],ov[i]]}
     opts.push({t:ov[0]||'...',ok:false},{t:ov[1]||'...',ok:false});
     for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]]}
-    const pv=bI>0?rv[bI-1].ar:s.verses[0].ar;
+    const pv=rv[bI-1].ar;
     return`<div class="qcard"><div class="qprompt">Soal ${qN+1}: Ayat di bawah ini ada di dalam surah <b>${s.name_id}</b>. Pilih ayat yang datang <u>tepat sesudahnya</u>.</div><div class="qar">${pv}</div><div style="font-size:12px;color:var(--inkf);margin-bottom:10px;text-align:center">👆 Pilih satu jawaban • Tap lagi untuk membatalkan</div>${opts.map((o,oi)=>`<button class="qopt" id="op${qN}${oi}" onclick="sO(${qN},${oi},${o.ok})" data-ok="${o.ok}">${o.t}</button>`).join('')}</div>`;
   }).join('');
   c.innerHTML=`<div class="qcon"><div class="arrinst">📝 Ujian Hafalan: ${s.name_id}</div><div style="text-align:center;font-size:13px;color:var(--inks);margin:-8px 16px 16px;line-height:1.5;padding:12px;background:var(--bluel);border-radius:8px">Untuk setiap soal, baca ayat yang diberikan, lalu pilih ayat yang datang <b>tepat sesudahnya</b>.<br>Jawaban bisa diubah sebelum menekan "Periksa".</div>${qh}</div><div class="pad"><button class="btn btn-p" onclick="chkF(${bi.length})">Periksa Jawaban →</button></div>`;
